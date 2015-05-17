@@ -20,21 +20,20 @@
 FROM       centos:centos6
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
+    # Create Kitchen user
+RUN useradd -c 'Test Kitchen' -d /home/kitchen -m kitchen -s /bin/bash
+ADD root /
     # Setup yum repos
 RUN rm -f /etc/yum.repos.d/CentOS*.repo                                       ;\
     yum -y update                                                             ;\
     rm -f /etc/yum.repos.d/CentOS*.repo                                       ;\
     yum -y install deltarpm yum-utils tar unzip sudo                          ;\
     # Create Kitchen user
-    useradd -c 'Test Kitchen' -d /home/kitchen -m kitchen -s /bin/bash        ;\
     echo kitchen:kitchen | chpasswd                                           ;\
     echo 'kitchen ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers                     ;\
-    echo 'kitchen ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/kitchen
-
-ADD root /
-
+    echo 'kitchen ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/kitchen           ;\
     # Add s6 Overlay
-RUN tar xvfz /tmp/s6-overlay.tar.gz -C /                                      ;\
+    tar xvfz /tmp/s6-overlay.tar.gz -C /                                      ;\
     # Setup Chef Client
     yum -y install chef which curl openssh-server openssh-clients             ;\
     /opt/chef/embedded/bin/gem install pry awesome_print                      ;\
@@ -43,7 +42,7 @@ RUN tar xvfz /tmp/s6-overlay.tar.gz -C /                                      ;\
     unzip -o /tmp/serf.zip -d /opt/serf/sbin/                                 ;\
     ln -s /opt/serf/config    /etc/serf                                       ;\
     ln -s /opt/serf/log       /var/log/serf                                   ;\
-    ln -s /opt/serf/sbin/serf /usr/local/sbin/serf                            ;\
+    ln -s /opt/serf/sbin/serf /usr/sbin/serf                                  ;\
     chown -R serf:serf /opt/serf                                              ;\
     chown root:serf    /opt/serf/config                                        \
                        /opt/serf/sbin/serf                                     \

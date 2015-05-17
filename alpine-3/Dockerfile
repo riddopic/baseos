@@ -27,16 +27,13 @@ RUN apk add --update bind-tools                                               ;\
     rm -rf /var/cache/apk/*                                                   ;\
     # Add s6 Overlay
     tar xvfz /tmp/s6-overlay.tar.gz -C /                                      ;\
-    # Setup Chef Client
-    yum -y install chef which curl openssh-server openssh-clients             ;\
-    /opt/chef/embedded/bin/gem install pry awesome_print                      ;\
     # Setup Serf agent
     addgroup -S serf                                                          ;\
     adduser -S -h /opt/serf -H -D -s /sbin/nologin -G serf serf               ;\
     unzip -o /tmp/serf.zip -d /opt/serf/sbin/                                 ;\
     ln -s /opt/serf/config    /etc/serf                                       ;\
     ln -s /opt/serf/log       /var/log/serf                                   ;\
-    ln -s /opt/serf/sbin/serf /usr/local/sbin/serf                            ;\
+    ln -s /opt/serf/sbin/serf /usr/sbin/serf                                  ;\
     chown -R serf:serf /opt/serf                                              ;\
     chown root:serf    /opt/serf/config                                        \
                        /opt/serf/sbin/serf                                     \
@@ -48,8 +45,6 @@ RUN apk add --update bind-tools                                               ;\
     # Add SSH Keys
     chown -R root ~root/.ssh                                                  ;\
     chmod -R go-rwsx ~root/.ssh                                               ;\
-    chown -R kitchen ~kitchen/.ssh                                            ;\
-    chmod -R go-rwsx ~kitchen/.ssh                                            ;\
     rm -rf /tmp/*
 
 ENTRYPOINT ["/init"]
