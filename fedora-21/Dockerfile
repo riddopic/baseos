@@ -33,12 +33,12 @@ RUN rm -f /etc/yum.repos.d/fedora-updates*.repo                               ;\
     echo 'kitchen ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers                     ;\
     echo 'kitchen ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/kitchen           ;\
     # Add s6 Overlay
-    tar xvfz /tmp/s6-overlay.tar.gz -C /                                      ;\
+    tar xvfz /s6-overlay.tar.gz -C /                                          ;\
     # Setup Chef Client
     yum -y install chef which curl openssh-server openssh-clients             ;\
     /opt/chef/embedded/bin/gem install pry awesome_print                      ;\
     # Setup Serf agent
-    useradd -c 'Serf' -d /opt/serf -M serf -s /sbin/nologin                   ;\
+    useradd -c 'Serf' -d /serf -M serf -s /sbin/nologin                       ;\
     unzip -o /tmp/serf.zip -d /opt/serf/sbin/                                 ;\
     ln -s /opt/serf/config    /etc/serf                                       ;\
     ln -s /opt/serf/log       /var/log/serf                                   ;\
@@ -57,6 +57,8 @@ RUN rm -f /etc/yum.repos.d/fedora-updates*.repo                               ;\
     chown -R kitchen ~kitchen/.ssh                                            ;\
     chmod -R go-rwsx ~kitchen/.ssh                                            ;\
     yum clean all                                                             ;\
+    chmod 1777 /tmp                                                           ;\
+    chown root:root /tmp                                                      ;\
     rm -rf /tmp/*                                                              \
            /var/tmp/*                                                          \
            /var/cache/*

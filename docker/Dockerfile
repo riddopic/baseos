@@ -3,18 +3,17 @@
 FROM       riddopic/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-VOLUME /var/lib/docker
+VOLUME ["/var/lib/docker"]
+
+ENV DEBIAN_FRONTEND noninteractive
 
 # Install Docker
 ADD root /
-RUN apt-get -yq update                                                        ;\
-    apt-get install -yq apt-transport-https ca-certificates curl lxc iptables ;\
+RUN apt-get-min update                                                        ;\
+    apt-get-install-min apt-transport-https ca-certificates curl lxc iptables ;\
     curl -sSL https://get.docker.com/ubuntu/ | sh                             ;\
-    chmod +x /usr/local/bin/wrapdocker                                        ;\
-    chmod +x /etc/services.d/docker/run
-
-# Cleanup
-RUN apt-get-min clean                                                         ;\
+    chmod +x /usr/sbin/wrapdocker                                             ;\
+    apt-get-min clean                                                         ;\
     rm -rf /tmp/*                                                              \
            /var/tmp/*                                                          \
            /var/lib/apt/lists/*                                                \

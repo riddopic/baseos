@@ -37,7 +37,7 @@ help:
   make push      Push image to the registry. \n\
   make shell   	 Run container in the foreground with an interactive shell. \n\
   make run       Run the container and attach the console (foreground). \n\
-  make stop      Start the container in the background (detached). \n\
+  make start     Start the container in the background (detached). \n\
   make stop      Gracefully stop a running container. \n\
   make rm        Remove the container. \n\
   make release   Create tag, build and push an image to the registry. \n\

@@ -24,20 +24,24 @@ EXPOSE 80 443
 VOLUME ["/var/opt/opscode"]
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV PUBLIC_URL chef.mudbox.dev
 
 # Setup Chef Server
-RUN apt-get -yq update ;\
-    apt-get install -yq logrotate hardlink chef-server-core ;\
-    rm -rf /etc/opscode ;\
-    ln -sfv /var/opt/opscode/log         /var/log/opscode ;\
-    ln -sfv /var/opt/opscode/etc         /etc/opscode ;\
-    ln -sfv /opt/opscode/sv/logrotate    /opt/opscode/service ;\
-    ln -sfv /opt/opscode/embedded/bin/sv /opt/opscode/init/logrotate ;\
-    chef-apply -e 'chef_gem "knife-opc"'
+RUN apt-get-min update                                                        ;\
+    apt-get-install-min logrotate hardlink chef-server-core opscode-manage    ;\
+    rm -rf /etc/opscode                                                       ;\
+    ln -sfv /var/opt/opscode/log         /var/log/opscode                     ;\
+    ln -sfv /var/opt/opscode/etc         /etc/opscode                         ;\
+    ln -sfv /opt/opscode/sv/logrotate    /opt/opscode/service                 ;\
+    ln -sfv /opt/opscode/embedded/bin/sv /opt/opscode/init/logrotate          ;\
+    chef-apply -e 'chef_gem "knife-opc"'                                      ;\
+    apt-get-min clean                                                         ;\
+    rm -rf /tmp/*                                                              \
+           /var/tmp/*                                                          \
+           /var/lib/apt/lists/*                                                \
+           /var/cache/apt/archives/*
 
 ADD root /
-RUN apt-get -yq clean;\
-    rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 ENTRYPOINT ["/init"]
 

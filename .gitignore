@@ -190,3 +190,8 @@ cscope.po.out
 vendor/bundle
 vendor/cache
 *authorized_keys*
+
+# Ignore the overlays
+*/**s6-overlay.tar.gz
+*/**serf.zip
+*/**consul.zip

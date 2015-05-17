@@ -26,11 +26,11 @@ ADD root /
 RUN apk add --update bind-tools                                               ;\
     rm -rf /var/cache/apk/*                                                   ;\
     # Add s6 Overlay
-    tar xvfz /tmp/s6-overlay.tar.gz -C /                                      ;\
+    tar xvfz /s6-overlay.tar.gz -C /                                          ;\
     # Setup Serf agent
     addgroup -S serf                                                          ;\
     adduser -S -h /opt/serf -H -D -s /sbin/nologin -G serf serf               ;\
-    unzip -o /tmp/serf.zip -d /opt/serf/sbin/                                 ;\
+    unzip -o /serf.zip -d /opt/serf/sbin/                                     ;\
     ln -s /opt/serf/config    /etc/serf                                       ;\
     ln -s /opt/serf/log       /var/log/serf                                   ;\
     ln -s /opt/serf/sbin/serf /usr/sbin/serf                                  ;\
@@ -45,6 +45,8 @@ RUN apk add --update bind-tools                                               ;\
     # Add SSH Keys
     chown -R root ~root/.ssh                                                  ;\
     chmod -R go-rwsx ~root/.ssh                                               ;\
+    chmod 1777 /tmp                                                           ;\
+    chown root:root /tmp                                                      ;\
     rm -rf /tmp/*
 
 ENTRYPOINT ["/init"]

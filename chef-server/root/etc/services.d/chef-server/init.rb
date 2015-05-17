@@ -1,8 +1,6 @@
 #!/opt/opscode/embedded/bin/ruby
-# -*- coding: utf-8 -*-
-#
-# rubocop:disable GlobalVars, SpecialGlobalVars
-# Some reading: http://felipec.wordpress.com/2013/11/04/init/
+# encoding: UTF-8
+
 
 require 'date'
 require 'fileutils'
@@ -23,7 +21,7 @@ def run!(*args, &block)
   pid
 end
 
-def reconfigure! reason=nil
+def reconfigure!(reason = nil)
   if $reconf_pid
     if reason
       log "#{reason}, but cannot reconfigure: already running"
@@ -81,14 +79,17 @@ log "Starting #{$PROGRAM_NAME}"
       File.write "/proc/sys/kernel/#{param}", value.to_s
     rescue
       log "Cannot set kernel.#{param} to #{value}: #{$!}"
-      log "You may need to run the container in privileged mode or set sysctl on host."
+      log 'You may need to run the container in privileged mode or set ' \
+          'sysctl on host.'
       raise
     end
   end
 end
 
 log 'Preparing configuration ...'
-FileUtils.mkdir_p %w'/var/opt/opscode/log /var/opt/opscode/etc /.chef/env', verbose: true
+%w(/var/opt/opscode/log /var/opt/opscode/etc /.chef/env).each do |dir|
+  FileUtils.mkdir_p dir, verbose: true
+end
 FileUtils.cp '/.chef/chef-server.rb', '/var/opt/opscode/etc', verbose: true
 
 %w'PUBLIC_URL OC_ID_ADMINISTRATORS'.each do |var|
