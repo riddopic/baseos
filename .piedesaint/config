@@ -1,0 +1,19 @@
+---
+:iface: 0.0.0.0
+:http_port: 8371
+:https_port: 8372
+:refresh_cert: true
+:host: localhost
+:key:
+:cert:
+:username:
+:password:
+:asset_provider_config: ''
+:asset_provider_helper_vagrantfile: ''
+:refresh_asset_provider: true
+:freshness: 3600
+:metastore: file:/tmp/rack/meta
+:entitystore: file:/tmp/rack/body
+:tar: false
+:folders:
+- s6

@@ -1,0 +1,8 @@
+
+[fedora-epel]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+baseurl=http://yum.mudbox.dev/fedora-epel/$releasever/$basearch
+enabled=1
+gpgcheck=1
+gpgkey=http://yum.mudbox.dev/fedora-epel/RPM-GPG-KEY-EPEL-$releasever
+sslverify=true

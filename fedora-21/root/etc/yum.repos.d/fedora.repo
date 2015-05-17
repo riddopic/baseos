@@ -1,0 +1,20 @@
+
+[fedora]
+name=Fedora $releasever - $basearch
+failovermethod=priority
+baseurl=http://yum.mudbox.dev/fedora/$releasever/Everything/$basearch/os/
+enabled=1
+metadata_expire=7d
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
+skip_if_unavailable=False
+
+[updates]
+name=Fedora $releasever - $basearch - Updates
+failovermethod=priority
+baseurl=http://yum.mudbox.dev/fedora/updates/$releasever/$basearch
+enabled=1
+metadata_expire=6h
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
+skip_if_unavailable=False

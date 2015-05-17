@@ -1,0 +1,9 @@
+{
+  "event_handlers": [
+    "user=/opt/serf/event_handlers/user-and-query-router.sh",
+    "query=/opt/serf/event_handlers/user-and-query-router.sh"
+  ],
+  "start_join": [
+    "192.168.3.1:7946"
+  ]
+}

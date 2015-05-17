@@ -1,0 +1,24 @@
+
+[base]
+name=CentOS-$releasever - Base
+baseurl=http://yum.mudbox.dev/centos/$releasever/os/$basearch
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+sslverify=true
+
+[extras]
+name=CentOS-$releasever - Extras
+baseurl=http://yum.mudbox.dev/centos/$releasever/extras/$basearch
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+sslverify=true
+
+[updates]
+name=CentOS-$releasever - Updates
+baseurl=http://yum.mudbox.dev/centos/$releasever/updates/$basearch
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+sslverify=true

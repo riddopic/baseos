@@ -1,0 +1,9 @@
+/bin/sh
+
+RSA_KEY=/etc/ssh/ssh_host_rsa_key
+DSA_KEY=/etc/ssh/ssh_host_rsa_key
+
+[ -f $RSA_KEY ] && ssh-keygen -t rsa -f $RSA_KEY -N ''
+[ -f $DSA_KEY ] && ssh-keygen -t dsa -f $DSA_KEY -N ''
+
+exec /usr/sbin/sshd -D
