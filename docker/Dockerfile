@@ -5,8 +5,6 @@ MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 VOLUME ["/var/lib/docker"]
 
-ENV DEBIAN_FRONTEND noninteractive
-
 # Install Docker
 ADD root /
 RUN apt-get-min update                                                        ;\
@@ -21,4 +19,4 @@ RUN apt-get-min update                                                        ;\
 
 ENTRYPOINT ["/init"]
 
-CMD ["/bin/bash"]
+CMD []

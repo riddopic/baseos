@@ -60,7 +60,7 @@ push:
 	docker push $(REPO)/$(NAME):$(VERSION)
 
 shell:
-	docker run --rm --name $(INSTANCE) -it $(REPO)/$(NAME):$(VERSION) /bin/bash
+	docker run --rm --name $(INSTANCE) -it $(REPO)/$(NAME):$(VERSION) /bin/sh
 
 run:
 	docker run --rm --name $(INSTANCE) $(PORTS) $(ENV) $(REPO)/$(NAME):$(VERSION)

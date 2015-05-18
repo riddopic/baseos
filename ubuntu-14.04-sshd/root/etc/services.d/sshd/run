@@ -6,4 +6,4 @@ DSA_KEY=/etc/ssh/ssh_host_rsa_key
 [ -f $RSA_KEY ] && ssh-keygen -t rsa -f $RSA_KEY -N ''
 [ -f $DSA_KEY ] && ssh-keygen -t dsa -f $DSA_KEY -N ''
 
-exec /usr/sbin/sshd -D
+exec /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no -o PasswordAuthentication=yes -o UsePrivilegeSeparation=no -o PidFile=/tmp/sshd.pid;

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 main() {
 	local container_id="$1"; shift

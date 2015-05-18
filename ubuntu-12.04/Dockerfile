@@ -56,6 +56,7 @@ RUN apt-key add /etc/apt/mudbox.key && rm -f /etc/apt/mudbox.key              ;\
     locale-gen en_US                                                          ;\
     update-locale LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8                       ;\
     tar xvfz /s6-overlay.tar.gz -C /                                          ;\
+    rm /s6-overlay.tar.gz                                                     ;\
     # Setup Chef Client
     apt-get-install-min sudo curl lsb-release unzip                           ;\
     curl https://packagecloud.io/install/repositories/chef/stable/script.deb.sh\
@@ -68,7 +69,8 @@ RUN apt-key add /etc/apt/mudbox.key && rm -f /etc/apt/mudbox.key              ;\
     echo 'kitchen ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/kitchen           ;\
     # Setup Serf agent
     useradd -c 'Serf' -d /serf -M serf -s /sbin/nologin                       ;\
-    unzip -o /tmp/serf.zip -d /opt/serf/sbin/                                 ;\
+    unzip -o /serf.zip -d /opt/serf/sbin/                                     ;\
+    rm -f /serf.zip                                                           ;\
     ln -s /opt/serf/config    /etc/serf                                       ;\
     ln -s /opt/serf/log       /var/log/serf                                   ;\
     ln -s /opt/serf/sbin/serf /usr/sbin/serf                                  ;\
@@ -85,8 +87,6 @@ RUN apt-key add /etc/apt/mudbox.key && rm -f /etc/apt/mudbox.key              ;\
     chmod -R go-rwsx ~root/.ssh                                               ;\
     chown -R kitchen ~kitchen/.ssh                                            ;\
     chmod -R go-rwsx ~kitchen/.ssh                                            ;\
-    chmod 1777 /tmp                                                           ;\
-    chown root:root /tmp                                                      ;\
     apt-get-min clean                                                         ;\
     rm -rf /tmp/*                                                              \
            /var/tmp/*                                                          \
@@ -95,4 +95,4 @@ RUN apt-key add /etc/apt/mudbox.key && rm -f /etc/apt/mudbox.key              ;\
 
 ENTRYPOINT ["/init"]
 
-CMD ["/bin/bash"]
+CMD []

@@ -20,17 +20,33 @@
 FROM       alpine:3.1
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-ADD root /
-
 # Add commonly used packages
-RUN apk add --update bind-tools                                               ;\
-    rm -rf /var/cache/apk/*                                                   ;\
+ADD root /
+RUN apk add --update go git gcc musl-dev dnsmasq bind-tools                   ;\
+    GOPATH=/go go get github.com/hashicorp/consul                             ;\
+    cd /opt/consul/sbin                                                       ;\
+    GOPATH=/go go build github.com/hashicorp/consul                           ;\
+    apk del go git gcc musl-dev                                               ;\
     # Add s6 Overlay
     tar xvfz /s6-overlay.tar.gz -C /                                          ;\
+    rm /s6-overlay.tar.gz                                                     ;\
+    # Setup Consul agent
+    addgroup -S consul                                                        ;\
+    adduser -SDs /sbin/nologin -G consul consul                               ;\
+    ln -s /opt/consul/config      /etc/consul                                 ;\
+    ln -s /opt/consul/log         /var/log/consul                             ;\
+    ln -s /opt/consul/sbin/consul /usr/sbin/consul                            ;\
+    chown -R consul:consul /opt/consul                                        ;\
+    chown root:consul      /opt/consul/config                                  \
+                           /opt/consul/sbin/consul                            ;\
+    chmod 750              /opt/consul                                         \
+                           /opt/consul/config                                  \
+                           /opt/consul/sbin/consul                            ;\
     # Setup Serf agent
     addgroup -S serf                                                          ;\
     adduser -S -h /opt/serf -H -D -s /sbin/nologin -G serf serf               ;\
     unzip -o /serf.zip -d /opt/serf/sbin/                                     ;\
+    rm -f /serf.zip                                                           ;\
     ln -s /opt/serf/config    /etc/serf                                       ;\
     ln -s /opt/serf/log       /var/log/serf                                   ;\
     ln -s /opt/serf/sbin/serf /usr/sbin/serf                                  ;\
@@ -45,10 +61,7 @@ RUN apk add --update bind-tools                                               ;\
     # Add SSH Keys
     chown -R root ~root/.ssh                                                  ;\
     chmod -R go-rwsx ~root/.ssh                                               ;\
-    chmod 1777 /tmp                                                           ;\
-    chown root:root /tmp                                                      ;\
     rm -rf /tmp/*
 
 ENTRYPOINT ["/init"]
-
-CMD ["/bin/sh"]
+CMD []

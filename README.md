@@ -52,6 +52,27 @@ OK, maybe it isn't that difficult...
 **NOTE:** Examples show here are for the [Fish](fish) shell, for `zsh` or `bash`
 you will have to mangle appropriately.
 
+
+# return last-run container id.
+alias dlc='docker ps -l -q'
+
+# remove all stopped containers
+alias drm="docker ps -a | grep Exited | cut -d ' ' -f 1 | xargs docker rm"
+
+# Kill all running containers.
+alias dockerkillall='docker kill $(docker ps -q)'
+
+# Delete all stopped containers.
+alias dockercleanc='docker rm $(docker ps -a -q)'
+
+# Delete all untagged images.
+alias dockercleani='docker rmi -f $(docker images -q -f dangling=true)'
+
+# Delete all stopped containers and untagged images.
+alias dockerclean='dockercleanc || true && dockercleani'
+
+
+
 Kill all running containers:
 
     docker kill (docker ps -q)

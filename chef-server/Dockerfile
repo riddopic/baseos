@@ -22,8 +22,6 @@ MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 80 443
 VOLUME ["/var/opt/opscode"]
-
-ENV DEBIAN_FRONTEND noninteractive
 ENV PUBLIC_URL chef.mudbox.dev
 
 # Setup Chef Server
@@ -45,4 +43,4 @@ ADD root /
 
 ENTRYPOINT ["/init"]
 
-CMD ["/bin/bash"]
+CMD []

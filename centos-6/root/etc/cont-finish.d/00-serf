@@ -1,8 +1,8 @@
 #!/usr/bin/with-contenv sh
 
 USER=serf
-BIN=/opt/serf/sbin/serf
-LOG=/opt/serf/log/agent.log
-CONFIG=/opt/serf/config/serf_agent.json
+BIN=/usr/sbin/serf
+CONFIG=/opt/serf/config
+BIND=`getent hosts $HOSTNAME | awk '{print $1}'`
 
-exec s6-setuidgid $USER $BIN force-leave $HOSTNAME >> $LOG 2>&1;
+exec s6-setuidgid $USER $BIN force-leave $HOSTNAME;

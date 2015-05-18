@@ -25,4 +25,4 @@ ADD root /
 
 ENTRYPOINT ["/init"]
 
-CMD ["/bin/bash"]
+CMD []

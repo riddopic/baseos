@@ -21,7 +21,7 @@
 
 default: all
 
-all: alpine centos chef-server docker fedora ubuntu
+all: alpine centos chef-server consul docker fedora ubuntu
 
 alpine:
 	$(MAKE) -C alpine-3 build tag
@@ -34,6 +34,9 @@ centos:
 
 chef-server: ubuntu
 	$(MAKE) -C chef-server build tag
+
+consul: alpine
+	$(MAKE) -C consul build tag
 
 docker: ubuntu
 	$(MAKE) -C docker build tag
@@ -48,8 +51,8 @@ ubuntu:
 	$(MAKE) -C ubuntu-14.04 build tag
 	$(MAKE) -C ubuntu-14.04-sshd build tag
 
-clean: clean-alpine clean-centos clean-chef-server clean-docker clean-fedora \
-			 clean-ubuntu
+clean: clean-alpine clean-centos clean-chef-server clean-consul clean-docker \
+			 clean-fedora clean-ubuntu
 
 clean-alpine:
 	$(MAKE) -C alpine-3 clean
@@ -62,6 +65,9 @@ clean-centos:
 
 clean-chef-server:
 	$(MAKE) -C chef-server clean
+
+clean-consul:
+	$(MAKE) -C consul clean
 
 clean-docker:
 	$(MAKE) -C docker clean
