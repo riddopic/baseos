@@ -24,10 +24,11 @@ EXPOSE 8300 8301 8301/udp 8302 8302/udp 8400 8500 53 53/udp
 
 # Setup Consul
 ADD root /
-RUN unzip -o /0.5.1_web_ui.zip -d /opt/consul/                                ;\
-    rm -rf /0.5.1_web_ui.zip /go  /var/cache/apk/*                            ;\
-    mv /opt/consul/dist /opt/consul/ui                                        ;\
-    chown -R consul:consul /opt/consul/ui
+RUN unzip -o /0.5.2_web_ui.zip                                                ;\
+    mkdir /ui                                                                 ;\
+    mv /dist/* /ui                                                            ;\
+    rm -rf /dist /0.5.2_web_ui.zip                                            ;\
+    chown -R consul:consul /ui
 
 ENTRYPOINT ["/init"]
 

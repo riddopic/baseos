@@ -2,7 +2,6 @@
 
 USER=consul
 BIN=/usr/sbin/consul
-CONFIG=/etc/consul.d
-BIND=`getent hosts $HOSTNAME | awk '{print $1}'`
+CONFIG=/etc/consul
 
 exec s6-setuidgid $USER $BIN force-leave $HOSTNAME;

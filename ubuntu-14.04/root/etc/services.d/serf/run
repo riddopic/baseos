@@ -2,7 +2,6 @@
 
 USER=serf
 BIN=/usr/sbin/serf
-CONFIG=/etc/serf.d
-BIND=`getent hosts $HOSTNAME | awk '{print $1}'`
+CONFIG=/etc/serf
 
-exec s6-setuidgid $USER $BIN agent -config-dir $CONFIG -bind $BIND -retry-interval 15s;
+exec s6-setuidgid $USER $BIN agent -config-dir $CONFIG;

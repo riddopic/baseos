@@ -32,11 +32,9 @@ RUN tar xvfz /s6-overlay-amd64.tar.gz -C /                                    ;\
     GOPATH=/go go build github.com/hashicorp/consul                           ;\
     apk del go git gcc musl-dev                                               ;\
     rm -rf /go /var/cache/apk/*                                               ;\
-    mkdir /srv /data                                                          ;\
+    mkdir /data                                                               ;\
     addgroup -S consul                                                        ;\
-    adduser -SDs /sbin/nologin -G consul -g Consul -h /srv/consul consul      ;\
-    chown -R consul:  /srv/consul                                             ;\
-    chmod 750         /srv/consul                                             ;\
+    adduser -SHDs /sbin/nologin -G consul -g Consul consul                    ;\
     chown root:consul /usr/sbin/consul                                        ;\
     chmod 750         /usr/sbin/consul                                        ;\
     chown root:consul /etc/consul                                             ;\
@@ -47,10 +45,8 @@ RUN tar xvfz /s6-overlay-amd64.tar.gz -C /                                    ;\
     # Setup Serf agent
     #
     addgroup -S serf                                                          ;\
-    adduser -SDs /sbin/nologin -G serf -g Serf -h /srv/serf serf              ;\
+    adduser -SHDs /sbin/nologin -G serf -g Serf serf                          ;\
     unzip -o /0.6.4_linux_amd64.zip -d /usr/sbin/                             ;\
-    chown -R serf:  /srv/serf                                                 ;\
-    chmod 750       /srv/serf                                                 ;\
     chown root:serf /usr/sbin/serf                                            ;\
     chmod 750       /usr/sbin/serf                                            ;\
     chown root:serf /etc/serf                                                 ;\
