@@ -32,7 +32,7 @@ RUN apk add --update go git gcc musl-dev dnsmasq bind-tools                   ;\
     rm /s6-overlay.tar.gz                                                     ;\
     # Setup Consul agent
     addgroup -S consul                                                        ;\
-    adduser -SDs /sbin/nologin -G consul consul                               ;\
+    adduser -SDs /sbin/nologin -G consul -g Consul -Hh /opt/consul consul     ;\
     ln -s /opt/consul/config      /etc/consul                                 ;\
     ln -s /opt/consul/log         /var/log/consul                             ;\
     ln -s /opt/consul/sbin/consul /usr/sbin/consul                            ;\
@@ -44,7 +44,7 @@ RUN apk add --update go git gcc musl-dev dnsmasq bind-tools                   ;\
                            /opt/consul/sbin/consul                            ;\
     # Setup Serf agent
     addgroup -S serf                                                          ;\
-    adduser -S -h /opt/serf -H -D -s /sbin/nologin -G serf serf               ;\
+    adduser -SDs /sbin/nologin -G serf -g Serf -Hh /opt/serf serf             ;\
     unzip -o /serf.zip -d /opt/serf/sbin/                                     ;\
     rm -f /serf.zip                                                           ;\
     ln -s /opt/serf/config    /etc/serf                                       ;\

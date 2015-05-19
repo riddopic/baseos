@@ -39,7 +39,7 @@ RUN rm -f /etc/yum.repos.d/CentOS*.repo                                       ;\
     yum -y install chef which curl openssh-server openssh-clients             ;\
     /opt/chef/embedded/bin/gem install pry awesome_print                      ;\
     # Setup Serf agent
-    useradd -c 'Serf' -d /serf -M serf -s /sbin/nologin                       ;\
+    useradd -c 'Serf' -d /opt/serf -M serf -s /sbin/nologin                   ;\
     unzip -o /serf.zip -d /opt/serf/sbin/                                     ;\
     rm -f /serf.zip                                                           ;\
     ln -s /opt/serf/config    /etc/serf                                       ;\
@@ -53,6 +53,19 @@ RUN rm -f /etc/yum.repos.d/CentOS*.repo                                       ;\
                        /opt/serf/config                                        \
                        /opt/serf/sbin/serf                                     \
                        /opt/serf/event_handlers/*                             ;\
+    # Setup Consul agent
+    useradd -c 'Consul' -d /opt/consul -M consul -s /sbin/nologin             ;\
+    unzip -o /0.5.1_linux_amd64.zip -d /opt/consul/sbin/                      ;\
+    rm -f 0.5.1_linux_amd64.zip                                               ;\
+    ln -s /opt/consul/config      /etc/consul                                 ;\
+    ln -s /opt/consul/log         /var/log/consul                             ;\
+    ln -s /opt/consul/sbin/consul /usr/sbin/consul                            ;\
+    chown -R consul:consul        /opt/consul                                 ;\
+    chown root:consul  /opt/consul/config                                      \
+                       /opt/consul/sbin/consul                                ;\
+    chmod 750          /opt/consul                                             \
+                       /opt/consul/config                                      \
+                       /opt/consul/sbin/consul                                ;\
     # Add SSH Keys
     chown -R root ~root/.ssh                                                  ;\
     chmod -R go-rwsx ~root/.ssh                                               ;\

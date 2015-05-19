@@ -39,7 +39,7 @@ RUN rm -f /etc/yum.repos.d/CentOS*.repo                                       ;\
     yum -y install chef which curl openssh-server openssh-clients             ;\
     /opt/chef/embedded/bin/gem install pry awesome_print                      ;\
     # Setup Serf agent
-    useradd -c 'Serf' -d /serf -M serf -s /sbin/nologin                       ;\
+    useradd -c 'Serf' -d /opt/serf -M serf -s /sbin/nologin                   ;\
     unzip -o /serf.zip -d /opt/serf/sbin/                                     ;\
     rm -f /serf.zip                                                           ;\
     ln -s /opt/serf/config    /etc/serf                                       ;\

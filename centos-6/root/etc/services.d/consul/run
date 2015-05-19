@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv sh
 
 USER=consul
-BIN=/usr/sbin/consul
+BIN=/opt/consul/sbin/consul
 CONFIG=/opt/consul/config
 BIND=`getent hosts $HOSTNAME | awk '{print $1}'`
 

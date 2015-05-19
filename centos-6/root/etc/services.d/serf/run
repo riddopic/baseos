@@ -5,4 +5,4 @@ BIN=/usr/sbin/serf
 CONFIG=/opt/serf/config
 BIND=`getent hosts $HOSTNAME | awk '{print $1}'`
 
-exec s6-setuidgid $USER $BIN force-leave $HOSTNAME;
+exec s6-setuidgid $USER $BIN agent -config-dir $CONFIG -bind $BIND -retry-interval 15s;
