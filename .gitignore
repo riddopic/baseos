@@ -192,6 +192,6 @@ vendor/cache
 *authorized_keys*
 
 # Ignore the overlays
-*s6-overlay.tar.gz*
-*serf.zip*
-*consul.zip*
+*web_ui.zip
+*linux_amd64.zip
+s6-overlay-amd64.tar.gz

@@ -1,8 +1,8 @@
 #!/usr/bin/with-contenv sh
 
 USER=consul
-BIN=/opt/consul/sbin/consul
-CONFIG=/opt/consul/config
+BIN=/usr/sbin/consul
+CONFIG=/etc/consul.d
 BIND=`getent hosts $HOSTNAME | awk '{print $1}'`
 
 exec s6-setuidgid $USER $BIN agent -config-dir $CONFIG -bind $BIND -retry-interval 15s;

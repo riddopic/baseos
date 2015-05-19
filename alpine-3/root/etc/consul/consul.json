@@ -1,5 +1,5 @@
 {
-  "data_dir": "/opt/consul/data",
+  "data_dir": "/data",
   "datacenter": "fr1",
   "leave_on_terminate": true
 }

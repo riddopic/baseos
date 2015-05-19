@@ -2,7 +2,7 @@
 
 USER=serf
 BIN=/usr/sbin/serf
-CONFIG=/opt/serf/config
+CONFIG=/etc/serf.d
 BIND=`getent hosts $HOSTNAME | awk '{print $1}'`
 
 exec s6-setuidgid $USER $BIN force-leave $HOSTNAME;

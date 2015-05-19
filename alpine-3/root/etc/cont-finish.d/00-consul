@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv sh
 
-USER=serf
-BIN=/usr/sbin/serf
-CONFIG=/etc/serf
+USER=consul
+BIN=/usr/sbin/consul
+CONFIG=/etc/consul
 
 exec s6-setuidgid $USER $BIN force-leave $HOSTNAME;

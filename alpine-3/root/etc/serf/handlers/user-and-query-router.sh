@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HANDLER_DIR=/opt/serf/event_handlers
+HANDLER_DIR=/etc/serf/handlers
 
 if [ "$SERF_EVENT" = "user" ]; then
   HANDLER="$HANDLER_DIR/user-$SERF_USER_EVENT"
