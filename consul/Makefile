@@ -23,8 +23,8 @@ REPO     ?= riddopic
 NAME     ?= consul
 VERSION  ?= 0.5.1
 INSTANCE ?= FallingDust
-PORTS    ?= '-p 8300:8300     -p 8301:8301 -p 8301:8301/udp -p 8302:8302 ' \
-					  '-p 8302:8302/udp -p 8400:8400 -p 8500:8500     -p 53:53/udp '
+PORTS    ?= -p 8300:8300     -p 8301:8301 -p 8301:8301/udp -p 8302:8302 \
+					  -p 8302:8302/udp -p 8400:8400 -p 8500:8500     -p 53:53/udp
 ENV      ?=
 
 help:
@@ -67,7 +67,7 @@ run:
 	docker run --rm --name $(INSTANCE) $(PORTS) $(ENV) $(REPO)/$(NAME):$(VERSION)
 
 start:
-	docker run -d --name $(INSTANCE) $(PORTS) $(ENV) $(REPO)/$(NAME):$(VERSION)
+	docker run -d --name $(INSTANCE) $(PORTS) $(ENV) $(REPO)/$(NAME):$(VERSION) $(CMD)
 
 stop:
 	docker stop $$(INSTANCE)

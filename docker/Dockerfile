@@ -3,9 +3,9 @@
 FROM       riddopic/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
+EXPOSE 22
 VOLUME ["/var/lib/docker"]
 
-# Install Docker
 ADD root /
 RUN apt-get-min update                                                        ;\
     apt-get-install-min apt-transport-https ca-certificates curl lxc iptables ;\
@@ -16,7 +16,3 @@ RUN apt-get-min update                                                        ;\
            /var/tmp/*                                                          \
            /var/lib/apt/lists/*                                                \
            /var/cache/apt/archives/*
-
-ENTRYPOINT ["/init"]
-
-CMD []

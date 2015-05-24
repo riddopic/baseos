@@ -52,6 +52,12 @@ to interact with the cluster. It also means it doesn't need disk persistence.
     docker run -it --name consul03 -h consul03.mudbox.dev riddopic/consul
 
 
+# https://github.com/just-containers/s6-overlay/releases/
+
+aria2c -x5 -j5 https://github.com/just-containers/s6-overlay/releases/download/v1.10.0.3/s6-overlay-amd64.tar.gz
+aria2c -x5 -j5 https://dl.bintray.com/mitchellh/serf/0.6.4_linux_amd64.zip
+aria2c -x5 -j5 https://dl.bintray.com/mitchellh/consul/0.5.2_linux_amd64.zip
+aria2c -x5 -j5 https://dl.bintray.com/mitchellh/consul/0.5.2_web_ui.zip
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -74,8 +80,18 @@ dig @172.17.1.16 -p 53 consul.node.consul
 }
 
 
+docker run -d -p 22 -p 8300:8300 -p 8301:8301 -p 8301:8301/udp -p 8302:8302 -p 8302:8302/udp -p 8400:8400 -p 8500:8500 --name consul -h consul.mudbox.dev riddopic/consul
 
 
+/bin/sh
+
+RSA_KEY=/etc/ssh/ssh_host_rsa_key
+DSA_KEY=/etc/ssh/ssh_host_dsa_key
+
+[ -f $RSA_KEY ] && /usr/bin/ssh-keygen -t rsa -f $RSA_KEY -N ''
+[ -f $DSA_KEY ] && /usr/bin/ssh-keygen -t dsa -f $DSA_KEY -N ''
+
+exec /usr/sbin/sshd -D -o UseDNS=no -o PasswordAuthentication=yes -o UsePrivilegeSeparation=no -o PidFile=/tmp/sshd.pid;
 
 
 

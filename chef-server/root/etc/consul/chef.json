@@ -1,0 +1,34 @@
+{
+  "services": [
+    {
+      "id": "http",
+      "name": "chef-api",
+      "tags": [
+        "Chef 12 API"
+      ],
+      "address": "127.0.0.1",
+      "port": 80,
+      "checks": [
+        {
+          "script": "/usr/lib/nagios/plugins/check_http -H -p 6000 172.17.2.121",
+          "interval": "5s"
+        }
+      ]
+    },
+    {
+      "id": "https",
+      "name": "chef-ui",
+      "tags": [
+        "Chef 12 Web UI"
+      ],
+      "address": "127.0.0.1",
+      "port": 443,
+      "checks": [
+        {
+          "script": "/usr/lib/nagios/plugins/check_http -H -p 6000 172.17.2.121 -S",
+          "interval": "10s"
+        }
+      ]
+    }
+  ]
+}

@@ -17,19 +17,16 @@
 # limitations under the License.
 #
 
-FROM       riddopic/alpine-3
+FROM       riddopic/alpine
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-EXPOSE 8300 8301 8301/udp 8302 8302/udp 8400 8500 53 53/udp
+EXPOSE 22 8300 8301 8301/udp 8302 8302/udp 8400 8500 53 53/udp
 
-# Setup Consul
 ADD root /
-RUN unzip -o /0.5.2_web_ui.zip                                                ;\
+RUN apk add --update dnsmasq openssh                                          ;\
+    rm -rf /var/cache/apk/*                                                   ;\
+    unzip -o /0.5.2_web_ui.zip                                                ;\
     mkdir /ui                                                                 ;\
     mv /dist/* /ui                                                            ;\
     rm -rf /dist /0.5.2_web_ui.zip                                            ;\
     chown -R consul:consul /ui
-
-ENTRYPOINT ["/init"]
-
-CMD []

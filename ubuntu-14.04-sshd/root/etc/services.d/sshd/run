@@ -1,9 +1,13 @@
-/bin/sh
+#!/usr/bin/with-contenv sh
 
 RSA_KEY=/etc/ssh/ssh_host_rsa_key
-DSA_KEY=/etc/ssh/ssh_host_rsa_key
+DSA_KEY=/etc/ssh/ssh_host_dsa_key
 
-[ -f $RSA_KEY ] && ssh-keygen -t rsa -f $RSA_KEY -N ''
-[ -f $DSA_KEY ] && ssh-keygen -t dsa -f $DSA_KEY -N ''
+[ -f $RSA_KEY ] || ssh-keygen -t dsa -f $RSA_KEY -N ''
+[ -f $DSA_KEY ] || ssh-keygen -t rsa -f $DSA_KEY -N ''
 
-exec /usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no -o PasswordAuthentication=yes -o UsePrivilegeSeparation=no -o PidFile=/tmp/sshd.pid;
+exec /usr/sbin/sshd -D -o UseDNS=no                  \
+                       -o UsePAM=no                  \
+                       -o PasswordAuthentication=yes \
+                       -o UsePrivilegeSeparation=no  \
+                       -o PidFile=/tmp/sshd.pid;

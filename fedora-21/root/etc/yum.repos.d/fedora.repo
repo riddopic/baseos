@@ -2,7 +2,7 @@
 [fedora]
 name=Fedora $releasever - $basearch
 failovermethod=priority
-baseurl=http://yum.mudbox.dev/fedora/$releasever/Everything/$basearch/os/
+mirrorlist=http://io.dev/?release=$releasever&arch=$basearch&repo=fedora-os
 enabled=1
 metadata_expire=7d
 gpgcheck=1
@@ -12,7 +12,7 @@ skip_if_unavailable=False
 [updates]
 name=Fedora $releasever - $basearch - Updates
 failovermethod=priority
-baseurl=http://yum.mudbox.dev/fedora/updates/$releasever/$basearch
+mirrorlist=http://io.dev/?release=$releasever&arch=$basearch&repo=fedora-updates
 enabled=1
 metadata_expire=6h
 gpgcheck=1

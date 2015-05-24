@@ -20,9 +20,6 @@
 FROM       riddopic/centos-6
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-# Enable SSH.
+EXPOSE 22
+
 ADD root /
-
-ENTRYPOINT ["/init"]
-
-CMD []

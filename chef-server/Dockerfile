@@ -20,7 +20,7 @@
 FROM       riddopic/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-EXPOSE 80 443
+EXPOSE 22 80 443
 VOLUME ["/var/opt/opscode"]
 ENV PUBLIC_URL chef.mudbox.dev
 
@@ -38,9 +38,4 @@ RUN apt-get-min update                                                        ;\
            /var/tmp/*                                                          \
            /var/lib/apt/lists/*                                                \
            /var/cache/apt/archives/*
-
 ADD root /
-
-ENTRYPOINT ["/init"]
-
-CMD []

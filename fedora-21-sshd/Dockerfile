@@ -20,9 +20,6 @@
 FROM       riddopic/fedora-21
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-# Enable SSH.
+EXPOSE 22
+
 ADD root /
-
-ENTRYPOINT ["/init"]
-
-CMD []

@@ -41,17 +41,22 @@ RUN apt-key add /etc/apt/mudbox.key && rm -f /etc/apt/mudbox.key              ;\
       echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/docker-apt-speedup          ;\
     fi                                                                        ;\
     #
+    # Enable Ubuntu Universe and Multiverse repos.
+    #
+    sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list             ;\
+    sed -i 's/^#\s*\(deb.*multiverse\)$/\1/g' /etc/apt/sources.list           ;\
+    apt-get-min update                                                        ;\
+    #
     # Handle issue with APT packages and replace `ischroot` to return true which
     # should prevents initscripts updates from breaking /dev/shm.
     #
-    apt-get-min update                                                        ;\
-    apt-get-install-min apt-utils                                             ;\
     dpkg-divert-min --local --rename --add /sbin/initctl                      ;\
     ln -sf /bin/true /sbin/initctl                                            ;\
     dpkg-divert-min --local --rename --add /usr/bin/ischroot                  ;\
     ln -sf /bin/true /usr/bin/ischroot                                        ;\
-    apt-get-install-min apt-transport-https ca-certificates                   ;\
-    apt-get-install-min software-properties-common                            ;\
+    apt-get-install-min software-properties-common apt-transport-https         \
+    openssl ca-certificates cron curl rsync logrotate gettext-base sudo        \
+    openssh-server curl lsb-release unzip rsyslog rsyslog-relp                ;\
     apt-get-min dist-upgrade -y --no-install-recommends                       ;\
     #
     # Set locale to Америка.
@@ -70,7 +75,7 @@ RUN apt-key add /etc/apt/mudbox.key && rm -f /etc/apt/mudbox.key              ;\
     apt-key add /etc/apt/gpg.key && rm -f /etc/apt/gpg.key                    ;\
     mv /etc/chef_stable.list /etc/apt/sources.list.d/chef_stable.list         ;\
     apt-get-min update                                                        ;\
-    apt-get-install-min chef sudo openssh-server curl lsb-release unzip       ;\
+    apt-get-install-min chef                                                  ;\
     /opt/chef/embedded/bin/gem install pry awesome_print                      ;\
     echo kitchen:kitchen | chpasswd                                           ;\
     echo 'kitchen ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers                     ;\
@@ -98,6 +103,11 @@ RUN apt-key add /etc/apt/mudbox.key && rm -f /etc/apt/mudbox.key              ;\
     chmod 750       /usr/sbin/serf                                            ;\
     chown root:serf /etc/serf                                                 ;\
     chmod 750       /etc/serf                                                 ;\
+    #
+    # Logstash
+    #
+    mkdir -p /etc/logstash/ssl                                                ;\
+    sed -i -e 's/keep 4/keep 1/' -e 's/rotate 4/rotate 1/' /etc/logrotate.conf;\
     #
     # Add SSH Keys
     #

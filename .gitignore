@@ -195,3 +195,4 @@ vendor/cache
 *web_ui.zip
 *linux_amd64.zip
 s6-overlay-amd64.tar.gz
+sources.list.d

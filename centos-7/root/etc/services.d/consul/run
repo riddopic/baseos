@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv sh
 
 USER=consul
-BIN=/usr/sbin/consul
 CONFIG=/etc/consul
+BIN=/usr/sbin/consul
 
-exec s6-setuidgid $USER $BIN agent -config-dir $CONFIG;
+exec s6-setuidgid $USER $BIN agent -config-dir $CONFIG -join $JOIN_IP;

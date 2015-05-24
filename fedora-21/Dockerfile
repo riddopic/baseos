@@ -27,7 +27,8 @@ RUN rm -f /etc/yum.repos.d/fedora-updates*.repo                               ;\
     yum -y update                                                             ;\
     # Yum updates can update the repos, so we double dip as a follow on.
     rm -f /etc/yum.repos.d/fedora-updates*.repo                               ;\
-    yum -y install deltarpm yum-utils tar unzip sudo                          ;\
+    yum -y install deltarpm yum-utils tar unzip sudo cronie rsync logrotate    \
+    rsyslog rsyslog-relp                                                      ;\
     #
     # Create Kitchen user
     #
@@ -67,6 +68,11 @@ RUN rm -f /etc/yum.repos.d/fedora-updates*.repo                               ;\
     chmod 750       /usr/sbin/serf                                            ;\
     chown root:serf /etc/serf                                                 ;\
     chmod 750       /etc/serf                                                 ;\
+    #
+    # Logstash
+    #
+    mkdir -p /etc/logstash/ssl                                                ;\
+    sed -i -e 's/keep 4/keep 1/' -e 's/rotate 4/rotate 1/' /etc/logrotate.conf;\
     #
     # Add SSH Keys
     #
