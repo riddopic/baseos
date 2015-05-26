@@ -20,7 +20,7 @@
 FROM       riddopic/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-EXPOSE 22 80 443
+EXPOSE 80 443
 VOLUME ["/var/opt/opscode"]
 ENV PUBLIC_URL chef.mudbox.dev
 

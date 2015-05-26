@@ -4,3 +4,9 @@ docker rm -f (docker ps -a | grep Exited | awk '{print $1}')
 docker rmi -f (docker images -q --filter "dangling=true")
 docker rm -f (docker ps -a -q)
 docker rmi -f (docker images -aq)
+
+
+# /var/lib/boot2docker/profile
+export HTTP_PROXY=http://10.254.254.254:8123
+export HTTPS_PROXY=http://10.254.254.254:8123
+export NO_PROXY='localhost,127.0.0.1,mudbox.dev'
