@@ -23,15 +23,16 @@ maintainer_email 'sharding@trace3.com'
 license          'Apache 2.0'
 description      'Base OS overrides and includes'
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.1.0'
+version          '0.1.2'
 
-%w(amazon centos debian fedora ubuntu).each do |os|
-  supports os
-end
+%w[amazon centos debian fedora oracle redhat ubuntu].each { |os| supports os }
 
-depends 'apt'
-depends 'yum'
+depends 'chef_handler'
+depends 'yum-fedora'
 depends 'yum-amazon'
 depends 'yum-centos'
+depends 'motd-tail'
 depends 'yum-epel'
-depends 'yum-fedora'
+depends 'garcon'
+depends 'yum'
+depends 'apt'
