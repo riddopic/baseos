@@ -26,13 +26,13 @@ when 'debian'
   end
 
 when 'fedora'
-  include_recipe 'yum-fedora::base'
+  include_recipe 'yum-fedora::default'
 
 when 'centos'
-  include_recipe 'yum-epel::base'
-  include_recipe 'yum-centos::base'
+  include_recipe 'yum-epel::default'
+  include_recipe 'yum-centos::default'
 
 when 'amazon'
-  include_recipe 'yum-epel::base'
-  include_recipe 'yum-amazon::base'
+  include_recipe 'yum-epel::default'
+  include_recipe 'yum-amazon::default'
 end
