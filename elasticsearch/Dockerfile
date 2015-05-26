@@ -20,7 +20,7 @@
 FROM       riddopic/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-EXPOSE 22 9200
+EXPOSE 9200
 
 ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 ADD root /

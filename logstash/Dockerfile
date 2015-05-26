@@ -20,7 +20,7 @@
 FROM       riddopic/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-EXPOSE 22 5000
+EXPOSE 5000
 
 ENV JAVA_HOME /usr/lib/jvm/java-7-oracle JAVA_OPTS -Djava.io.tmpdir=/var/lib/logstash -Des.config=/etc/logstash/elasticsearch.yml
 ADD root /

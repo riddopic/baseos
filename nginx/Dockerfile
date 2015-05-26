@@ -20,7 +20,7 @@
 FROM       riddopic/alpine
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-EXPOSE 22 80 443
+EXPOSE 80 443
 
 ADD root /
 RUN apk add --update nginx openssh                                            ;\

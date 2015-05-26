@@ -17,59 +17,17 @@
 # limitations under the License.
 #
 
-FROM       tobegit3hub/seagull
+FROM       alpine:3.1
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-RUN useradd -c 'Test Kitchen' -d /home/kitchen -m kitchen -s /bin/bash
+EXPOSE 80
+ENV GOMAXPROCS=2 GOPATH=/go
 ADD root /
-RUN tar xvfz /s6-overlay-amd64.tar.gz -C /                                    ;\
-    #
-    # Setup Consul agent
-    #
-    apk add --update go git gcc musl-dev bind-tools sudo                      ;\
-    GOPATH=/go go get github.com/hashicorp/consul                             ;\
-    cd /usr/sbin                                                              ;\
-    GOPATH=/go go build github.com/hashicorp/consul                           ;\
+RUN apk add --update go git gcc musl-dev                                      ;\
+    go get github.com/astaxie/beego                                           ;\
+    go get github.com/beego/bee                                               ;\
+    go get github.com/tobegit3hub/seagull                                     ;\
+    sed -i 's/10086/80/' /go/src/github.com/tobegit3hub/seagull/conf/app.conf ;\
+    go build github.com/tobegit3hub/seagull                                   ;\
     apk del go git gcc musl-dev                                               ;\
-    rm -rf /go /var/cache/apk/*                                               ;\
-    mkdir /data                                                               ;\
-    addgroup -S consul                                                        ;\
-    adduser -SHDs /sbin/nologin -G consul -g Consul consul                    ;\
-    chown root:consul /usr/sbin/consul                                        ;\
-    chmod 750         /usr/sbin/consul                                        ;\
-    chown root:consul /etc/consul                                             ;\
-    chmod 750         /etc/consul                                             ;\
-    chown -R consul:  /data                                                   ;\
-    chmod 750         /data                                                   ;\
-    #
-    # Setup Serf agent
-    #
-    addgroup -S serf                                                          ;\
-    adduser -SHDs /sbin/nologin -G serf -g Serf serf                          ;\
-    unzip -o /0.6.4_linux_amd64.zip -d /usr/sbin/                             ;\
-    chown root:serf /usr/sbin/serf                                            ;\
-    chmod 750       /usr/sbin/serf                                            ;\
-    chown root:serf /etc/serf                                                 ;\
-    chmod 750       /etc/serf                                                 ;\
-    #
-    # Add SSH Keys
-    #
-    echo kitchen:kitchen | chpasswd                                           ;\
-    echo 'kitchen ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers                     ;\
-    echo 'kitchen ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/kitchen           ;\
-    chown -R root    ~root/.ssh                                               ;\
-    chmod -R go-rwsx ~root/.ssh                                               ;\
-    chown -R kitchen ~kitchen/.ssh                                            ;\
-    chmod -R go-rwsx ~kitchen/.ssh                                            ;\
-    #
-    # Cleanup
-    #
-    rm -rf /tmp/* /s6-overlay-amd64.tar.gz /0.6.4_linux_amd64.zip
-
-ENTRYPOINT ["/init"]
-
-CMD []
-
-
-# Run the server
-CMD ["./seagull"]
+    rm -rf /go /var/cache/apk/*

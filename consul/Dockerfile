@@ -20,7 +20,7 @@
 FROM       riddopic/alpine
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-EXPOSE 22 8300 8301 8301/udp 8302 8302/udp 8400 8500 53 53/udp
+EXPOSE 8300 8301 8301/udp 8302 8302/udp 8400 8500 53 53/udp
 
 ADD root /
 RUN apk add --update dnsmasq openssh                                          ;\

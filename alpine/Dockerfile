@@ -20,7 +20,7 @@
 FROM       alpine:3.1
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-ENV CONSUL_VERSION=0.5.2 GOMAXPROCS=2
+ENV CONSUL_VERSION=0.5.2 GOMAXPROCS=2 GOPATH=/go
 RUN addgroup kitchen                                                          ;\
     adduser -h /home/kitchen -g 'Kitchen User' -G kitchen -D kitchen
 ADD root /

@@ -20,10 +20,10 @@
 .PHONY: build push shell run start stop rm release clean
 
 REPO     ?= riddopic
-NAME     ?= ubuntu-14.04-sshd
-VERSION  ?= 14.04
-INSTANCE ?= LingeringFeather
-PORTS    ?=
+NAME     ?= seagull
+VERSION  ?= 1.3.0
+INSTANCE ?= PurpleFrog
+PORTS    ?= -p 80:80
 ENV      ?=
 
 help:

@@ -22,16 +22,14 @@
 default: all
 
 all: alpine centos chef-server consul docker elasticsearch fedora kibana \
-	   logstash nginx ubuntu
+	   logstash nginx seagull ubuntu
 
 alpine:
 	$(MAKE) -C alpine build tag
 
 centos:
 	$(MAKE) -C centos-6 build tag
-	$(MAKE) -C centos-6-sshd build tag
 	$(MAKE) -C centos-7 build tag
-	$(MAKE) -C centos-7-sshd build tag
 
 chef-server: ubuntu
 	$(MAKE) -C chef-server build tag
@@ -47,7 +45,6 @@ elasticsearch: ubuntu
 
 fedora:
 	$(MAKE) -C fedora-21 build tag
-	$(MAKE) -C fedora-21-sshd build tag
 
 kibana: ubuntu
 	$(MAKE) -C kibana build tag
@@ -58,23 +55,23 @@ logstash: ubuntu
 nginx: alpine
 	$(MAKE) -C nginx build tag
 
+seagull: alpine
+	$(MAKE) -C seagull build tag
+
 ubuntu:
 	$(MAKE) -C ubuntu-12.04 build tag
-	$(MAKE) -C ubuntu-12.04-sshd build tag
 	$(MAKE) -C ubuntu-14.04 build tag
-	$(MAKE) -C ubuntu-14.04-sshd build tag
 
 clean: clean-alpine clean-centos clean-chef-server clean-consul clean-docker \
-			 clean-elasticsearch clean-fedora clean-ubuntu
+			 clean-elasticsearch clean-fedora clean-kibana clean-logstash \
+			 clean-nginx clean-seagull clean-ubuntu
 
 clean-alpine:
 	$(MAKE) -C alpine clean
 
 clean-centos:
 	$(MAKE) -C centos-6 clean
-	$(MAKE) -C centos-6-sshd clean
 	$(MAKE) -C centos-7 clean
-	$(MAKE) -C centos-7-sshd clean
 
 clean-chef-server:
 	$(MAKE) -C chef-server clean
@@ -90,7 +87,6 @@ clean-elasticsearch:
 
 clean-fedora:
 	$(MAKE) -C fedora-21 clean
-	$(MAKE) -C fedora-21-sshd clean
 
 clean-kibana:
 	$(MAKE) -C kibana clean
@@ -101,8 +97,9 @@ clean-logstash:
 clean-nginx:
 	$(MAKE) -C nginx clean
 
+clean-seagull:
+	$(MAKE) -C seagull clean
+
 clean-ubuntu:
 	$(MAKE) -C ubuntu-12.04 clean
-	$(MAKE) -C ubuntu-12.04-sshd clean
 	$(MAKE) -C ubuntu-14.04 clean
-	$(MAKE) -C ubuntu-14.04-sshd clean
