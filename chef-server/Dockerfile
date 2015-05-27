@@ -22,7 +22,7 @@ MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 80 443
 VOLUME ["/var/opt/opscode"]
-ENV PUBLIC_URL chef.mudbox.dev
+ENV PUBLIC_URL chef.acme.dev
 
 # Setup Chef Server
 RUN apt-get-min update                                                        ;\
