@@ -19,7 +19,7 @@
 
 .PHONY: build push shell run start stop rm release clean
 
-REPO     ?= riddopic
+REPO     ?= acme
 NAME     ?= ubuntu-12.04
 VERSION  ?= 12.04
 INSTANCE ?= QuietPine
