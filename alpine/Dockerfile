@@ -22,7 +22,7 @@ MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 ENV CONSUL_VERSION=0.5.2 GOMAXPROCS=2 GOPATH=/go
 RUN addgroup kitchen                                                          ;\
-    adduser -h /home/kitchen -g 'Kitchen User' -G kitchen -D kitchen
+    adduser -h /home/kitchen -g 'Kitchen User' -DG kitchen -s /bin/ash kitchen
 ADD root /
 RUN tar xvfz /s6-overlay-amd64.tar.gz -C /                                    ;\
     #

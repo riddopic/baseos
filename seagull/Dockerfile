@@ -17,17 +17,17 @@
 # limitations under the License.
 #
 
-FROM       alpine:3.1
+FROM       riddopic/alpine
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 80
-ENV GOMAXPROCS=2 GOPATH=/go
 ADD root /
 RUN apk add --update go git gcc musl-dev                                      ;\
     go get github.com/astaxie/beego                                           ;\
     go get github.com/beego/bee                                               ;\
     go get github.com/tobegit3hub/seagull                                     ;\
-    sed -i 's/10086/80/' /go/src/github.com/tobegit3hub/seagull/conf/app.conf ;\
-    go build github.com/tobegit3hub/seagull                                   ;\
+    cd /go/src/github.com/tobegit3hub/seagull                                 ;\
+    sed -i 's/httpport = 10086/httpport = 80/' conf/app.conf                  ;\
+    go build seagull.go                                                       ;\
     apk del go git gcc musl-dev                                               ;\
-    rm -rf /go /var/cache/apk/*
+    rm -rf /var/cache/apk/*
