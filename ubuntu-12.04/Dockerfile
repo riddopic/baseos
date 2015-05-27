@@ -28,6 +28,7 @@ RUN useradd -c 'Test Kitchen' -d /home/kitchen -m kitchen -s /bin/bash
 ADD root /
     # Add MudBox keys and insure exec permission to utils.
 RUN apt-key add /etc/apt/mudbox.key && rm -f /etc/apt/mudbox.key              ;\
+    apt-key add /etc/apt/gpg.key    && rm -f /etc/apt/gpg.key                 ;\
     chmod +x /usr/bin/apt-cleanup                                              \
              /usr/bin/apt-dpkg-wrapper                                         \
              /usr/bin/apt-get-install                                         ;\
@@ -72,8 +73,6 @@ RUN apt-key add /etc/apt/mudbox.key && rm -f /etc/apt/mudbox.key              ;\
     #
     # Setup Chef Client
     #
-    apt-key add /etc/apt/gpg.key && rm -f /etc/apt/gpg.key                    ;\
-    mv /etc/chef_stable.list /etc/apt/sources.list.d/chef_stable.list         ;\
     apt-get-min update                                                        ;\
     apt-get-install-min chef                                                  ;\
     /opt/chef/embedded/bin/gem install pry awesome_print                      ;\

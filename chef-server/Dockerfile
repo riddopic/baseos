@@ -17,12 +17,12 @@
 # limitations under the License.
 #
 
-FROM       riddopic/ubuntu-14.04
+FROM       acme/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 80 443
 VOLUME ["/var/opt/opscode"]
-ENV PUBLIC_URL chef.acme.dev
+ENV PUBLIC_URL chef-server.acme.dev
 
 # Setup Chef Server
 RUN apt-get-min update                                                        ;\

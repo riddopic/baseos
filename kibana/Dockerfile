@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-FROM       riddopic/ubuntu-14.04
+FROM       acme/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 ENV JAVA_HOME /usr/lib/jvm/java-7-oracle

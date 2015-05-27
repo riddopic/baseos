@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-FROM       riddopic/ubuntu-14.04
+FROM       acme/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 VOLUME ["/var/lib/docker"]

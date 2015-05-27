@@ -41,6 +41,12 @@ def reconfigure!(reason = nil)
     log "Reconfiguration finished: #{$?}"
     $reconf_pid = nil
   end
+  if File.exist? '/usr/bin/opscode-manage-ctl'
+    $reconf_pid = run! '/usr/bin/opscode-manage-ctl', 'reconfigure' do
+      log "Reconfiguration finished: #{$?}"
+      $reconf_pid = nil
+    end
+  end
 end
 
 def shutdown!
