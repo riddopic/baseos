@@ -17,19 +17,12 @@
 # limitations under the License.
 #
 
-FROM       acme/ubuntu-14.04
+FROM       acme/nginx
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 EXPOSE 5601
+
 ADD root /
-RUN apt-key adv --fetch-keys                                                   \
-    "http://packages.elasticsearch.org/GPG-KEY-elasticsearch"                 ;\
-    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select     \
-    true | debconf-set-selections                                             ;\
-    add-apt-repository -y ppa:webupd8team/java                                ;\
-    apt-get-min update                                                        ;\
-    apt-get-install-min oracle-java7-installer                                ;\
-    apt-get-min clean                                                         ;\
-    rm -rf /var/cache/oracle-jdk7-installer                                   ;\
-    rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/*
+RUN apk add --update nginx wget vim;\
+    cp /opt/kibana.yml /opt/kibana/config/kibana.yml;\
+    rm -rf /var/cache/apk/*

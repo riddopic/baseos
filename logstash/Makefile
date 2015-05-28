@@ -19,13 +19,16 @@
 
 .PHONY: build push shell run start stop rm release clean
 
-REPO     ?= acme
-NAME     ?= logstash
-VERSION  ?= 1.4
-INSTANCE ?= QuietPine
-PORTS    ?= '-p 8300:8300     -p 8301:8301 -p 8301:8301/udp -p 8302:8302 ' \
-					  '-p 8302:8302/udp -p 8400:8400 -p 8500:8500     -p 53:53/udp '
-ENV      ?=
+REPO      ?= acme
+VERSION   ?= 1.5.0
+NAME      ?= logstash
+INSTANCE  ?= QuietPine
+PORTS     ?=
+ENV       ?=
+
+URL  ?= https://download.elastic.co/logstash/logstash
+SHA1 ?= logstash-$(VERSION).tar.gz.sha1.txt
+FILE ?= logstash-$(VERSION).tar.gz
 
 help:
 	@echo "\n\033[0;35mContainer management for:\033[0m\n" \
@@ -47,7 +50,7 @@ help:
 
 all: build tag
 
-build:
+build: tarfile
 	@echo "\n\033[0;35mBuilding $(NAME) container from Dockerfile:\033[0m\n" \
 	      "Repository: [\033[0;33m$(REPO)\033[0m]\n" \
 	      "Name:       [\033[0;33m$(NAME)\033[0m]\n" \
@@ -56,6 +59,15 @@ build:
 
 tag:
 	docker tag -f $(REPO)/$(NAME):$(VERSION) $(REPO)/$(NAME):latest
+
+tarfile:
+	@echo "\n\033[0;35mDownloading Logstash:\033[0m\n" \
+	      "Repository: [\033[0;33m$(URL)\033[0m]\n"  \
+	      "Name:       [\033[0;33m$(FILE)\033[0m]\n"  \
+	      "Version:    [\033[0;33m$(VERSION)\033[0m]\n"
+	wget -O - $(URL)/$(FILE) | tee $(FILE) | shasum > $(SHA1) && \
+	tar zxf $(FILE) -C root/opt/ && \
+	mv root/opt/logstash-$(VERSION)/ root/opt/logstash
 
 push:
 	docker push $(REPO)/$(NAME):$(VERSION)
@@ -79,3 +91,4 @@ release: build
 	make push -e version=$(VERSION)
 
 clean:
+	rm -rf $(SHA1) $(FILE) root/opt/logstash

@@ -1,23 +1,35 @@
 #!/usr/bin/env bash
 
-[[ -f ./configure ]] && source configure
+CERT_DAYS=3650
+LOGSTASH_KEY=/etc/logstash/ssl/logstash-forwarder.key
+LOGSTASH_CRT=/etc/logstash/ssl/logstash-forwarder.crt
+DOMAINNAME=`dnsdomainname`
 
-PATH=/bin:/usr/bin
-LS_HOME=/var/lib/logstash
-LS_HEAP_SIZE="500m"
-LS_JAVA_OPTS="-Djava.io.tmpdir=${LS_HOME}"
-LS_LOG_FILE=/var/log/logstash/logstash.log
-LS_USE_GC_LOGGING=""
-LS_CONF_DIR=/etc/logstash/conf.d
-LS_OPEN_FILES=16384
-LS_NICE=19
-LS_OPTS=""
-HOME="${HOME:-$LS_HOME}"
-JAVA_OPTS="${LS_JAVA_OPTS}"
+# You will need to ensure that the container has a valid DNS domain assigned so
+# the certificates are generated correctly.  i.e: (-h, --hostname=) or
+# $ docker run -e hostname.example.com.
+function make_certs {
+  openssl req -x509                   \
+              -days     $CERT_DAYS    \
+              -batch                  \
+              -nodes                  \
+              -newkey    rsa:2048     \
+              -keyout   $LOGSTASH_KEY \
+              -out      $LOGSTASH_CRT \
+              -subj /CN=$DOMAINNAME
+}
 
-ulimit -n ${LS_OPEN_FILES}
-cd "${LS_HOME}"
+# Check if both certs are present
+if [ ! -f $LOGSTASH_KEY ] && [ ! -f $LOGSTASH_CRT ]; then
+  echo "Generating self signed certs for logstash"
+  make_certs
+  echo "Done"
+elif [ ! -f $LOGSTASH_KEY ] || [ ! -f $LOGSTASH_CRT ]; then
+  echo "Cert missing. Removing old certs and regenerating."
+  rm -f /etc/logstash/ssl/logstash-forwarder*
+  make_certs
+else
+  echo "Certificates already exist!"
+fi
 
-export PATH HOME JAVA_OPTS LS_HEAP_SIZE LS_JAVA_OPTS LS_USE_GC_LOGGING
-
-exec s6-setuidgid logstash nice -n ${LS_NICE} /opt/logstash/bin/logstash agent -f "${LS_CONF_DIR}" -l "${LS_LOG_FILE}" ${LS_OPTS}
+exec /opt/logstash/bin/logstash -f /etc/logstash/server.conf

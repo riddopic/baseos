@@ -134,7 +134,6 @@ bin/*
 .kitchen/
 .kitchen.local.yml
 .chef-runner/
-.chef
 
 ### Ruby ###
 *.gem
@@ -195,3 +194,4 @@ vendor/cache
 *web_ui.zip
 *linux_amd64.zip
 s6-overlay-amd64.tar.gz
+logstash*.tar.*

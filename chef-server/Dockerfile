@@ -22,11 +22,11 @@ MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 80 443
 VOLUME ["/var/opt/opscode"]
-ENV PUBLIC_URL chef-server.acme.dev
+ENV PUBLIC_URL=chef-server.acme.dev OC_ID_ADMINISTRATORS=jenkins
 
-# Setup Chef Server
 RUN apt-get-min update                                                        ;\
-    apt-get-install-min logrotate hardlink chef-server-core opscode-manage    ;\
+    apt-get-install-min logrotate hardlink chef-server-core opscode-manage     \
+    opscode-reporting opscode-analytics                                       ;\
     rm -rf /etc/opscode                                                       ;\
     ln -sfv /var/opt/opscode/log         /var/log/opscode                     ;\
     ln -sfv /var/opt/opscode/etc         /etc/opscode                         ;\

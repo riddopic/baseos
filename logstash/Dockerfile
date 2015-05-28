@@ -20,17 +20,17 @@
 FROM       acme/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-EXPOSE 5000
+EXPOSE 4545 4546
 
-ENV JAVA_HOME /usr/lib/jvm/java-7-oracle JAVA_OPTS -Djava.io.tmpdir=/var/lib/logstash -Des.config=/etc/logstash/elasticsearch.yml
+ENV LS_HEAP_SIZE=2g
 ADD root /
-RUN apt-key adv --fetch-keys                                                   \
-    "http://packages.elasticsearch.org/GPG-KEY-elasticsearch"                 ;\
-    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select     \
-    true | debconf-set-selections                                             ;\
-    add-apt-repository -y ppa:webupd8team/java                                ;\
-    apt-get-min update                                                        ;\
-    apt-get-install-min oracle-java7-installer                                ;\
-    apt-get-min clean                                                         ;\
-    rm -rf /var/cache/oracle-jdk7-installer                                   ;\
+RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select \
+    true | debconf-set-selections;\
+    add-apt-repository -y ppa:webupd8team/java;\
+    apt-get-min update;\
+    apt-get-install-min wget python  oracle-java7-installer;\
+    /opt/logstash/bin/plugin update  logstash-output-zeromq;\
+    /opt/logstash/bin/plugin install logstash-input-log-courier;\
+    apt-get-min clean;\
+    rm -rf /var/cache/oracle-jdk7-installer;\
     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/*

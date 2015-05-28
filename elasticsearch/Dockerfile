@@ -20,21 +20,18 @@
 FROM       acme/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-EXPOSE 9200
+EXPOSE 9200 9300
 
-ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
+ENV ES_HEAP_SIZE=8g
 ADD root /
-RUN apt-key adv --fetch-keys                                                   \
-    "http://packages.elasticsearch.org/GPG-KEY-elasticsearch"                 ;\
-    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select     \
-    true | debconf-set-selections                                             ;\
-    add-apt-repository -y ppa:webupd8team/java                                ;\
-    apt-get-min update                                                        ;\
-    apt-get-install-min oracle-java7-installer                                ;\
-    apt-get-install-min elasticsearch                                         ;\
-    mv /elasticsearch     /etc/default/elasticsearch                          ;\
-    mv /elasticsearch.yml /etc/elasticsearch/elasticsearch.yml                ;\
-    rm /etc/services.d/syslog/configure                                       ;\
-    apt-get-min clean                                                         ;\
-    rm -rf /var/cache/oracle-jdk7-installer                                   ;\
+RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select \
+    true | debconf-set-selections;\
+    add-apt-repository -y ppa:webupd8team/java;\
+    apt-get-min update;\
+    apt-get-install-min oracle-java7-installer;\
+    /elasticsearch/bin/plugin -i elasticsearch/license/latest;\
+    /elasticsearch/bin/plugin -i elasticsearch/shield/latest;\
+    mv /elasticsearch.yml /elasticsearch/config/elasticsearch.yml;\
+    apt-get-min clean;\
+    rm -rf /var/cache/oracle-jdk7-installer;\
     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/*
