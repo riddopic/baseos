@@ -21,21 +21,17 @@ FROM       acme/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 80 443
-VOLUME ["/var/opt/opscode"]
-ENV PUBLIC_URL=chef-server.acme.dev OC_ID_ADMINISTRATORS=jenkins
+ENV KNIFE_HOME=/etc/chef
 
-RUN apt-get-min update                                                        ;\
-    apt-get-install-min logrotate hardlink chef-server-core opscode-manage     \
-    opscode-reporting opscode-analytics                                       ;\
-    rm -rf /etc/opscode                                                       ;\
-    ln -sfv /var/opt/opscode/log         /var/log/opscode                     ;\
-    ln -sfv /var/opt/opscode/etc         /etc/opscode                         ;\
-    ln -sfv /opt/opscode/sv/logrotate    /opt/opscode/service                 ;\
-    ln -sfv /opt/opscode/embedded/bin/sv /opt/opscode/init/logrotate          ;\
-    chef-apply -e 'chef_gem "knife-opc"'                                      ;\
-    apt-get-min clean                                                         ;\
-    rm -rf /tmp/*                                                              \
-           /var/tmp/*                                                          \
-           /var/lib/apt/lists/*                                                \
-           /var/cache/apt/archives/*
+RUN apt-get-min update;\
+    apt-get-install-min logrotate hardlink chef-server-core;\
+    rm -rf /etc/opscode;\
+    ln -sfv /var/opt/opscode/log /var/log/opscode;\
+    ln -sfv /var/opt/opscode/etc /etc/opscode;\
+    ln -sfv /opt/opscode/sv/logrotate /opt/opscode/service;\
+    ln -sfv /opt/opscode/embedded/bin/sv /opt/opscode/init/logrotate;\
+    chef-apply -e 'chef_gem "knife-opc"';\
+    apt-get-min clean;\
+    rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/*
+
 ADD root /

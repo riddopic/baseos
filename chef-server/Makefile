@@ -19,12 +19,15 @@
 
 .PHONY: build push shell run start stop rm release clean
 
-REPO     ?= acme
-NAME     ?= chef-server
-VERSION  ?= 12.3
-INSTANCE ?= AgedWood
-PORTS    ?=
-ENV      ?=
+REPO      ?= acme
+NAME      ?= chef-server
+VERSION   ?= 12.3
+INSTANCE  ?= AgedWood
+PORTS     ?= -p 80 -p 443
+ENV       ?= -e "PUBLIC_URL=chef-server.acme.dev" \
+					   -e "OC_ID_ADMINISTRATORS=jenkins"
+CONTAINER ?= $(REPO)/$(NAME):$(VERSION)
+OPTIONS   ?= $(PORTS) $(ENV)
 
 help:
 	@echo "\n\033[0;35mContainer management for:\033[0m\n" \
@@ -60,13 +63,13 @@ push:
 	docker push $(REPO)/$(NAME):$(VERSION)
 
 shell:
-	docker run --rm --name $(INSTANCE) -it $(REPO)/$(NAME):$(VERSION) /bin/bash
+	docker run --rm --name $(INSTANCE) -it $(OPTIONS) $(CONTAINER) /bin/bash
 
 run:
-	docker run --rm --name $(INSTANCE) $(PORTS) $(ENV) $(REPO)/$(NAME):$(VERSION)
+	docker run --rm --name $(INSTANCE) $(OPTIONS) $(CONTAINER)
 
 start:
-	docker run -d --name $(INSTANCE) $(PORTS) $(ENV) $(REPO)/$(NAME):$(VERSION)
+	docker run -d --name $(INSTANCE) $(OPTIONS) $(CONTAINER)
 
 stop:
 	docker stop $$(INSTANCE)

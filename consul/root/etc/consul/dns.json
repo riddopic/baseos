@@ -1,7 +1,11 @@
 {
   "service": {
-    "name": "dns",
+    "name":  "dns",
     "tags": ["dns", "dnsmasq"],
-    "port": 53
+    "port":   53,
+    "checks": [{
+      "script":  "/usr/bin/check_dns.sh",
+      "interval": "5s"
+    }]
   }
 }
