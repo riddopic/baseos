@@ -46,7 +46,7 @@ elasticsearch: ubuntu
 fedora:
 	$(MAKE) -C fedora-21 build tag
 
-kibana: ubuntu
+kibana: alpine nginx
 	$(MAKE) -C kibana build tag
 
 logstash: ubuntu

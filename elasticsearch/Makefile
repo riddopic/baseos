@@ -65,8 +65,8 @@ tarfile:
 	      "Repository: [\033[0;33m$(URL)\033[0m]\n"  \
 	      "Name:       [\033[0;33m$(FILE)\033[0m]\n"  \
 	      "Version:    [\033[0;33m$(VERSION)\033[0m]\n"
-	wget -O - $(URL)/$(FILE) | tee $(FILE) | shasum > $(SHA1) && \
-	tar zxf $(FILE) -C root/ && \
+	wget -O - $(URL)/$(FILE) | tee $(FILE) | shasum > $(SHA1)
+	tar zxf $(FILE) -C root/
 	mv root/elasticsearch-$(VERSION) root/elasticsearch
 
 push:
@@ -91,4 +91,4 @@ release: build
 	make push -e version=$(VERSION)
 
 clean:
-	rm -rf $(SHA1) $(FILE) root/elasticsearch
+	rm -rf $(SHA1) $(FILE) root/elasticsearch root/elasticsearch-$(VERSION)

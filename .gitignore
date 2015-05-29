@@ -193,5 +193,8 @@ vendor/cache
 # Ignore the overlays
 *web_ui.zip
 *linux_amd64.zip
-s6-overlay-amd64.tar.gz
-logstash*.tar.*
+s6-overlay-amd64.tar.gz*
+logstash-*.tar.gz*
+elasticsearch-*.tar.gz*
+kibana-*.tar.gz*
+

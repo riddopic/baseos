@@ -26,6 +26,21 @@ INSTANCE ?= SparklingSky
 PORTS    ?=
 ENV      ?=
 
+CONSUL_VER  ?= 0.5.2
+CONSUL_URL  ?= https://dl.bintray.com/mitchellh/consul
+CONSUL_SHA1 ?= $(CONSUL_VER)_linux_amd64.zip.sha1.txt
+CONSUL_FILE ?= $(CONSUL_VER)_linux_amd64.zip
+
+SERF_VER    ?= 0.6.4
+SERF_URL    ?= https://dl.bintray.com/mitchellh/serf
+SERF_SHA1   ?= $(SERF_VER)_linux_amd64.zip.sha1.txt
+SERF_FILE   ?= $(SERF_VER)_linux_amd64.zip
+
+S6_VER      ?= v1.10.0.0
+S6_URL      ?= https://github.com/just-containers/s6-overlay/releases/download
+S6_SHA1     ?= s6-overlay-amd64.tar.gz.sha1.txt
+S6_FILE     ?= s6-overlay-amd64.tar.gz
+
 help:
 	@echo "\n\033[0;35mContainer management for:\033[0m\n" \
 	      "Repository: [\033[0;33m$(REPO)\033[0m]\n" \
@@ -56,6 +71,32 @@ build:
 tag:
 	docker tag -f $(REPO)/$(NAME):$(VERSION) $(REPO)/$(NAME):latest
 
+consul:
+	@echo "\n\033[0;35mDownloading Consul:\033[0m\n" \
+	      "Repository: [\033[0;33m$(URL)\033[0m]\n"  \
+	      "Name:       [\033[0;33m$(FILE)\033[0m]\n"  \
+	      "Version:    [\033[0;33m$(VERSION)\033[0m]\n"
+	@[ -d root/usr/sbin ] || mkdir root/usr/sbin
+	wget -O - $(CONSUL_URL)/$(CONSUL_FILE) | tee $(CONSUL_FILE) | \
+	shasum > $(CONSUL_SHA1) && unzip -o $(CONSUL_FILE) -d root/usr/sbin/
+
+serf:
+	@echo "\n\033[0;35mDownloading Serf:\033[0m\n" \
+	      "Repository: [\033[0;33m$(URL)\033[0m]\n"  \
+	      "Name:       [\033[0;33m$(FILE)\033[0m]\n"  \
+	      "Version:    [\033[0;33m$(VERSION)\033[0m]\n"
+	@[ -d root/usr/sbin ] || mkdir root/usr/sbin
+	wget -O - $(SERF_URL)/$(SERF_FILE) | tee $(SERF_FILE) | \
+	shasum > $(SERF_SHA1) && unzip -o $(SERF_FILE) -d root/usr/sbin/
+
+s6:
+	@echo "\n\033[0;35mDownloading s6:\033[0m\n" \
+	      "Repository: [\033[0;33m$(URL)\033[0m]\n"  \
+	      "Name:       [\033[0;33m$(FILE)\033[0m]\n"  \
+	      "Version:    [\033[0;33m$(VERSION)\033[0m]\n"
+	wget -O - $(S6_URL)/$(S6_FILE) | tee $(S6_FILE) | \
+	shasum > $(S6_SHA1) && unzip -o $(FILE) -d root/usr/sbin/
+
 push:
 	docker push $(REPO)/$(NAME):$(VERSION)
 
@@ -78,3 +119,6 @@ release: build
 	make push -e version=$(VERSION)
 
 clean:
+	rm -rf $(CONSUL_SHA1) $(CONSUL_FILE) root/usr/sbin/consul && \
+	rm -rf $(SERF_SHA1)   $(SERF_FILE)   root/usr/sbin/serf   && \
+	rm -rf $(S6_SHA1)     $(S6_FILE)
