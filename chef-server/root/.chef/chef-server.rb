@@ -32,7 +32,7 @@
 # opscode_erchef['base_resource_url'] = _uri.to_s
 
 topology 'standalone'
-api_fqdn 'chef-server.acme.dev'
+api_fqdn 'chef.acme.dev'
 oc_id['administrators'] = 'jenkins'
 
 _local = File.join(File.dirname(__FILE__), 'chef-server-local.rb')

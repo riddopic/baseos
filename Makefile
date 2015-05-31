@@ -59,7 +59,6 @@ seagull: alpine
 	$(MAKE) -C seagull build tag
 
 ubuntu:
-	$(MAKE) -C ubuntu-12.04 build tag
 	$(MAKE) -C ubuntu-14.04 build tag
 
 clean: clean-alpine clean-centos clean-chef-server clean-consul clean-docker \
@@ -101,5 +100,4 @@ clean-seagull:
 	$(MAKE) -C seagull clean
 
 clean-ubuntu:
-	$(MAKE) -C ubuntu-12.04 clean
 	$(MAKE) -C ubuntu-14.04 clean

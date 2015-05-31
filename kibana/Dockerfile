@@ -17,12 +17,14 @@
 # limitations under the License.
 #
 
-FROM       acme/nginx
+FROM       riddopic/nginx
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 5601
-
-ADD root /
-RUN apk add --update nginx wget vim;\
-    cp /opt/kibana.yml /opt/kibana/config/kibana.yml;\
-    rm -rf /var/cache/apk/*
+ADD https://download.elastic.co/kibana/kibana/kibana-4.0.2-linux-x64.tar.gz / \
+    root /
+RUN tar zxf /kibana-4.0.2-linux-x64.tar.gz -C /opt/ && \
+    mv /opt/kibana-4.0.2-linux-x64/ /opt/kibana && \
+    apk add --update nginx wget vim && \
+    mv /opt/kibana.yml /opt/kibana/config/kibana.yml && \
+    rm -rf /var/cache/apk/* /kibana-4.0.2-linux-x64.tar.gz

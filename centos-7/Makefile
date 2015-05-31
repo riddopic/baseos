@@ -19,7 +19,7 @@
 
 .PHONY: build push shell run start stop rm release clean
 
-REPO     ?= acme
+REPO     ?= riddopic
 NAME     ?= centos-7
 VERSION  ?= 7.1
 INSTANCE ?= DawnCloud
@@ -78,3 +78,6 @@ release: build
 	make push -e version=$(VERSION)
 
 clean:
+	docker rmi -f $$(docker images -q --filter 'dangling=true')
+	docker rmi -f $(REPO)/$(NAME):$(VERSION)
+	docker rmi -f $(REPO)/$(NAME):latest

@@ -17,12 +17,11 @@
 # limitations under the License.
 #
 
-FROM       acme/ubuntu-14.04
+FROM       riddopic/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 80 443
-ENV KNIFE_HOME=/etc/chef
-
+ENV ENV GOMAXPROCS=2 DEBIAN_FRONTEND=noninteractive KNIFE_HOME=/etc/chef
 RUN apt-get-min update;\
     apt-get-install-min logrotate hardlink chef-server-core;\
     rm -rf /etc/opscode;\

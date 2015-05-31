@@ -17,20 +17,23 @@
 # limitations under the License.
 #
 
-FROM       acme/ubuntu-14.04
+FROM       riddopic/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 4545 4546
-
-ENV LS_HEAP_SIZE=2g
-ADD root /
-RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select \
-    true | debconf-set-selections;\
-    add-apt-repository -y ppa:webupd8team/java;\
-    apt-get-min update;\
-    apt-get-install-min wget python  oracle-java7-installer;\
-    /opt/logstash/bin/plugin update  logstash-output-zeromq;\
-    /opt/logstash/bin/plugin install logstash-input-log-courier;\
-    apt-get-min clean;\
-    rm -rf /var/cache/oracle-jdk7-installer;\
+ENV LS_HEAP_SIZE=2g GOMAXPROCS=2 DEBIAN_FRONTEND=noninteractive
+ADD https://download.elastic.co/logstash/logstash/logstash-1.5.0.tar.gz / \
+    root /
+RUN tar zxf /logstash-1.5.0.tar.gz -C /opt/ && \
+    mv /opt/logstash-1.5.0/ /opt/logstash && \
+    rm /logstash-1.5.0.tar.gz && \
+    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select \
+    true | debconf-set-selections && \
+    add-apt-repository -y ppa:webupd8team/java && \
+    apt-get-min update && \
+    apt-get-install-min wget python  oracle-java7-installer && \
+    /opt/logstash/bin/plugin update  logstash-output-zeromq && \
+    /opt/logstash/bin/plugin install logstash-input-log-courier && \
+    apt-get-min clean && \
+    rm -rf /var/cache/oracle-jdk7-installer && \
     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/*

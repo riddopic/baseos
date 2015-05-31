@@ -20,9 +20,12 @@
 FROM       fedora:21
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
+ENV GOMAXPROCS=2
 RUN useradd -c 'Test Kitchen' -d /home/kitchen -m kitchen -s /bin/bash
-ENV CONSUL_VERSION=0.5.2 GOMAXPROCS=2
-ADD root /
+ADD https://dl.bintray.com/mitchellh/serf/0.6.4_linux_amd64.zip / \
+    https://dl.bintray.com/mitchellh/consul/0.5.2_linux_amd64.zip / \
+    https://github.com/just-containers/s6-overlay/releases/download/v1.10.0.3/s6-overlay-amd64.tar.gz / \
+    root /
 RUN rm -f /etc/yum.repos.d/fedora-updates*.repo                               ;\
     yum -y update                                                             ;\
     # Yum updates can update the repos, so we double dip as a follow on.

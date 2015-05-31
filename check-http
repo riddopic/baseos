@@ -1,6 +1,6 @@
 #!/bin/bash
 
-readonly IMAGE="acme/consul"
+readonly IMAGE="riddopic/consul"
 
 main() {
 	local container_id="$1"; shift

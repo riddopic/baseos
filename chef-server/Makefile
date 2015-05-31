@@ -19,12 +19,12 @@
 
 .PHONY: build push shell run start stop rm release clean
 
-REPO      ?= acme
+REPO      ?= riddopic
 NAME      ?= chef-server
 VERSION   ?= 12.3
 INSTANCE  ?= AgedWood
 PORTS     ?= -p 80 -p 443
-ENV       ?= -e "PUBLIC_URL=chef-server.acme.dev" \
+ENV       ?= -e "PUBLIC_URL=chef.acme.deriddopic
 					   -e "OC_ID_ADMINISTRATORS=jenkins"
 CONTAINER ?= $(REPO)/$(NAME):$(VERSION)
 OPTIONS   ?= $(PORTS) $(ENV)
@@ -81,3 +81,6 @@ release: build
 	make push -e version=$(VERSION)
 
 clean:
+	docker rmi -f $$(docker images -q --filter 'dangling=true')
+	docker rmi -f $(REPO)/$(NAME):$(VERSION)
+	docker rmi -f $(REPO)/$(NAME):latest

@@ -19,7 +19,7 @@
 
 .PHONY: build push shell run start stop rm release clean
 
-REPO     ?= acme
+REPO     ?= riddopic
 NAME     ?= docker
 VERSION  ?= 1.6
 INSTANCE ?= LivelySmoke
@@ -66,7 +66,7 @@ run:
 	docker run --rm --name $(INSTANCE) $(PORTS) $(ENV) $(REPO)/$(NAME):$(VERSION)
 
 start:
-	docker run -d --name $(INSTANCE) $(PORTS) $(ENV) $(REPO)/$(NAME):$(VERSION)
+	docker run -d --privileged --name $(INSTANCE) $(PORTS) $(ENV) $(REPO)/$(NAME):$(VERSION)
 
 stop:
 	docker stop $$(INSTANCE)
@@ -78,3 +78,6 @@ release: build
 	make push -e version=$(VERSION)
 
 clean:
+	docker rmi -f $$(docker images -q --filter 'dangling=true')
+	docker rmi -f $(REPO)/$(NAME):$(VERSION)
+	docker rmi -f $(REPO)/$(NAME):latest

@@ -17,10 +17,11 @@
 # limitations under the License.
 #
 
-FROM       acme/alpine
+FROM       riddopic/alpine
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 80
+ENV GOMAXPROCS=2
 ADD root /
 RUN apk add --update go git gcc musl-dev curl;\
     go get github.com/astaxie/beego;\

@@ -19,7 +19,7 @@
 
 .PHONY: build push shell run start stop rm release clean
 
-REPO     ?= acme
+REPO     ?= riddopic
 NAME     ?= consul
 VERSION  ?= 0.5.1
 INSTANCE ?= FallingDust
@@ -79,3 +79,6 @@ release: build
 	make push -e version=$(VERSION)
 
 clean:
+	docker rmi -f $$(docker images -q --filter 'dangling=true')
+	docker rmi -f $(REPO)/$(NAME):$(VERSION)
+	docker rmi -f $(REPO)/$(NAME):latest

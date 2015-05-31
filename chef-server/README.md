@@ -18,7 +18,7 @@ Ports 80 (HTTP) and 443 (HTTPS) are exposed.
 
 To start the container (replace ${FQDN} with the name of the server):
 
-    docker run -de 'PUBLIC_URL=https://${FQDN}/' -h ${FQDN} acme/chef-server
+    docker run -de 'PUBLIC_URL=https://${FQDN}/' -h ${FQDN} riddopic/chef-server
 
 ### Prerequisites and first start
 

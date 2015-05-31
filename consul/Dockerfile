@@ -17,12 +17,13 @@
 # limitations under the License.
 #
 
-FROM       acme/alpine
+FROM       riddopic/alpine
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 8300 8301 8301/udp 8302 8302/udp 8400 8500 53 53/udp
-
-ADD root /
+ENV GOMAXPROCS=2
+ADD https://dl.bintray.com/mitchellh/consul/0.5.2_web_ui.zip / \
+    root /
 RUN apk add --update dnsmasq openssh curl;\
     rm -rf /var/cache/apk/*;\
     unzip -o /0.5.2_web_ui.zip;\

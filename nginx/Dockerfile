@@ -17,15 +17,15 @@
 # limitations under the License.
 #
 
-FROM       acme/alpine
+FROM       riddopic/alpine
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
 EXPOSE 80 443
-
+ENV GOMAXPROCS=2
 ADD root /
-RUN apk add --update nginx openssh                                            ;\
-    rm -rf /var/cache/apk/*                                                   ;\
-    mkdir -p /tmp/nginx                                                       ;\
-    chown -R nginx:www-data /tmp/nginx                                        ;\
-    ln -sf /dev/stdout /var/log/nginx/access.log                              ;\
-    ln -sf /dev/stderr /var/log/nginx/error.log                               ;\
+RUN apk add --update nginx openssh && \
+    rm -rf /var/cache/apk/* && \
+    mkdir -p /tmp/nginx && \
+    chown -R nginx:www-data /tmp/nginx && \
+    ln -sf /dev/stdout /var/log/nginx/access.log && \
+    ln -sf /dev/stderr /var/log/nginx/error.log

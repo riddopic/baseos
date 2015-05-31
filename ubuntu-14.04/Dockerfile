@@ -20,12 +20,12 @@
 FROM       ubuntu:14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-# Prevents initramfs updates from trying to run grub and lilo.
-ENV INITRD no
-
-ENV CONSUL_VERSION=0.5.2 GOMAXPROCS=2 DEBIAN_FRONTEND=noninteractive
+ENV INITRD=no GOMAXPROCS=2 DEBIAN_FRONTEND=noninteractive
 RUN useradd -c 'Test Kitchen' -d /home/kitchen -m kitchen -s /bin/bash
-ADD root /
+ADD https://dl.bintray.com/mitchellh/serf/0.6.4_linux_amd64.zip / \
+    https://dl.bintray.com/mitchellh/consul/0.5.2_linux_amd64.zip / \
+    https://github.com/just-containers/s6-overlay/releases/download/v1.10.0.3/s6-overlay-amd64.tar.gz / \
+    root /
     # Add MudBox keys and insure exec permission to utils.
 RUN apt-key add /etc/apt/mudbox.key && rm -f /etc/apt/mudbox.key              ;\
     apt-key add /etc/apt/gpg.key    && rm -f /etc/apt/gpg.key                 ;\

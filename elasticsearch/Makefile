@@ -19,16 +19,12 @@
 
 .PHONY: build push shell run start stop rm release clean
 
-REPO     ?= acme
+REPO     ?= riddopic
 NAME     ?= elasticsearch
 VERSION  ?= 1.5.2
 INSTANCE ?= EmptyWind
 PORTS    ?=
 ENV      ?=
-
-URL  ?= https://download.elastic.co/elasticsearch/elasticsearch
-SHA1 ?= elasticsearch-$(VERSION).tar.gz.sha1.txt
-FILE ?= elasticsearch-$(VERSION).tar.gz
 
 help:
 	@echo "\n\033[0;35mContainer management for:\033[0m\n" \
@@ -50,7 +46,7 @@ help:
 
 all: build tag
 
-build: tarfile
+build:
 	@echo "\n\033[0;35mBuilding $(NAME) container from Dockerfile:\033[0m\n" \
 	      "Repository: [\033[0;33m$(REPO)\033[0m]\n" \
 	      "Name:       [\033[0;33m$(NAME)\033[0m]\n" \
@@ -59,15 +55,6 @@ build: tarfile
 
 tag:
 	docker tag -f $(REPO)/$(NAME):$(VERSION) $(REPO)/$(NAME):latest
-
-tarfile:
-	@echo "\n\033[0;35mDownloading Kibana:\033[0m\n" \
-	      "Repository: [\033[0;33m$(URL)\033[0m]\n"  \
-	      "Name:       [\033[0;33m$(FILE)\033[0m]\n"  \
-	      "Version:    [\033[0;33m$(VERSION)\033[0m]\n"
-	wget -O - $(URL)/$(FILE) | tee $(FILE) | shasum > $(SHA1)
-	tar zxf $(FILE) -C root/
-	mv root/elasticsearch-$(VERSION) root/elasticsearch
 
 push:
 	docker push $(REPO)/$(NAME):$(VERSION)
@@ -91,4 +78,6 @@ release: build
 	make push -e version=$(VERSION)
 
 clean:
-	rm -rf $(SHA1) $(FILE) root/elasticsearch root/elasticsearch-$(VERSION)
+	docker rmi -f $$(docker images -q --filter 'dangling=true')
+	docker rmi -f $(REPO)/$(NAME):$(VERSION)
+	docker rmi -f $(REPO)/$(NAME):latest
