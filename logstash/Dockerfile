@@ -20,20 +20,24 @@
 FROM       riddopic/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
-EXPOSE 4545 4546
-ENV LS_HEAP_SIZE=2g GOMAXPROCS=2 DEBIAN_FRONTEND=noninteractive
-ADD https://download.elastic.co/logstash/logstash/logstash-1.5.0.tar.gz / \
-    root /
-RUN tar zxf /logstash-1.5.0.tar.gz -C /opt/ && \
-    mv /opt/logstash-1.5.0/ /opt/logstash && \
-    rm /logstash-1.5.0.tar.gz && \
-    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select \
-    true | debconf-set-selections && \
-    add-apt-repository -y ppa:webupd8team/java && \
+
+ENV LANG C.UTF-8 JAVA_VERSION 7u79 JAVA_DEBIAN_VERSION 7u79-2.5.5-1~deb8u1 \
+    LOGSTASH_MAJOR 1.5 LOGSTASH_VERSION 1:1.5.0-1
+
+EXPOSE 9200 9300
+RUN apt-get-min update && \
+    apt-get-install-min ca-certificates curl wget unzip && \
+    apt-get-install-min openjdk-7-jre-headless="$JAVA_DEBIAN_VERSION" && \
+    rm -rf /var/lib/apt/lists/* && \
+    /var/lib/dpkg/info/ca-certificates-java.postinst configure && \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
+    curl -o /usr/local/bin/gosu     -SL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" && \
+    curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture).asc" && \
+    gpg --verify /usr/local/bin/gosu.asc && \
+    rm /usr/local/bin/gosu.asc && \
+    chmod +x /usr/local/bin/gosu && \
+    apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4 && \
+    echo "deb http://packages.elasticsearch.org/logstash/${LOGSTASH_MAJOR}/debian stable main" > /etc/apt/sources.list.d/logstash.list && \
     apt-get-min update && \
-    apt-get-install-min wget python  oracle-java7-installer && \
-    /opt/logstash/bin/plugin update  logstash-output-zeromq && \
-    /opt/logstash/bin/plugin install logstash-input-log-courier && \
-    apt-get-min clean && \
-    rm -rf /var/cache/oracle-jdk7-installer && \
-    rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/*
+    apt-get-install-min logstash=$LOGSTASH_VERSION && \
+    rm -rf /var/lib/apt/lists/*

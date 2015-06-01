@@ -20,22 +20,23 @@
 FROM       riddopic/ubuntu-14.04
 MAINTAINER Stefano Harding <riddopic@gmail.com>
 
+ENV JRE_VERSION=8u31 JRE_CHECKSUM=4d6a99aa7f2addde8f6ad714e788ff61 JAVA_HOME=/usr/java/latest ELASTICSEARCH_VERSION=1.5.2 PATH=/usr/share/elasticsearch/bin:$PATH
+ENV LANG C.UTF-8 JAVA_VERSION 8u45 JAVA_DEBIAN_VERSION 8u45-b14-2~bpo8+2 CA_CERTIFICATES_JAVA_VERSION 20140324 ELASTICSEARCH_VERSION 1.5.2
 EXPOSE 9200 9300
-
-ENV ES_HEAP_SIZE=2g GOMAXPROCS=2 DEBIAN_FRONTEND=noninteractive
-ADD https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.tar.gz / \
-    root /
-RUN tar zxf /elasticsearch-1.5.2.tar.gz -C / && \
-    mv /elasticsearch-1.5.2 /elasticsearch && \
-    rm /elasticsearch-1.5.2.tar.gz && \
-    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select \
-    true | debconf-set-selections && \
-    add-apt-repository -y ppa:webupd8team/java && \
+RUN apt-get-min update && \
+    apt-get-install-min ca-certificates curl wget unzip && \
+    apt-get-install-min openjdk-8-jre-headless="$JAVA_DEBIAN_VERSION" \
+		                    ca-certificates-java="$CA_CERTIFICATES_JAVA_VERSION" && \
+    rm -rf /var/lib/apt/lists/* && \
+    /var/lib/dpkg/info/ca-certificates-java.postinst configure && \
+    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
+    curl -o /usr/local/bin/gosu     -SL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" && \
+    curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture).asc" && \
+    gpg --verify /usr/local/bin/gosu.asc && \
+    rm /usr/local/bin/gosu.asc && \
+    chmod +x /usr/local/bin/gosu && \
+    apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 46095ACC8548582C1A2699A9D27D666CD88E42B4 && \
+    echo "deb http://packages.elasticsearch.org/elasticsearch/${ELASTICSEARCH_VERSION%.*}/debian stable main" > /etc/apt/sources.list.d/elasticsearch.list && \
     apt-get-min update && \
-    apt-get-install-min oracle-java7-installer && \
-    /elasticsearch/bin/plugin -i elasticsearch/license/latest && \
-    /elasticsearch/bin/plugin -i elasticsearch/shield/latest && \
-    mv /elasticsearch.yml /elasticsearch/config/elasticsearch.yml && \
-    apt-get-min clean && \
-    rm -rf /var/cache/oracle-jdk7-installer && \
-    rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/*
+    apt-get-install-min elasticsearch=$ELASTICSEARCH_VERSION && \
+    rm -rf /var/lib/apt/lists/*

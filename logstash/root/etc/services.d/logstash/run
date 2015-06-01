@@ -1,35 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-CERT_DAYS=3650
-LOGSTASH_KEY=/etc/logstash/ssl/logstash-forwarder.key
-LOGSTASH_CRT=/etc/logstash/ssl/logstash-forwarder.crt
-DOMAINNAME=`dnsdomainname`
+set -e
 
-# You will need to ensure that the container has a valid DNS domain assigned so
-# the certificates are generated correctly.  i.e: (-h, --hostname=) or
-# $ docker run -e hostname.example.com.
-function make_certs {
-  openssl req -x509                   \
-              -days     $CERT_DAYS    \
-              -batch                  \
-              -nodes                  \
-              -newkey    rsa:2048     \
-              -keyout   $LOGSTASH_KEY \
-              -out      $LOGSTASH_CRT \
-              -subj /CN=$DOMAINNAME
-}
-
-# Check if both certs are present
-if [ ! -f $LOGSTASH_KEY ] && [ ! -f $LOGSTASH_CRT ]; then
-  echo "Generating self signed certs for logstash"
-  make_certs
-  echo "Done"
-elif [ ! -f $LOGSTASH_KEY ] || [ ! -f $LOGSTASH_CRT ]; then
-  echo "Cert missing. Removing old certs and regenerating."
-  rm -f /etc/logstash/ssl/logstash-forwarder*
-  make_certs
-else
-  echo "Certificates already exist!"
+# Add logstash as command if needed
+if [[ "$1" == -* ]]; then
+	set -- logstash "$@"
 fi
 
-exec /opt/logstash/bin/logstash -f /etc/logstash/server.conf
+# Run as user "logstash" if the command is "logstash"
+if [ "$1" == logstash ]; then
+	set -- gosu logstash "$@"
+fi
+
+exec "$@"
