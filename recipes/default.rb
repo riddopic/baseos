@@ -21,6 +21,7 @@ case node[:platform]
 when 'debian'
   include_recipe 'apt::default'
   include_recipe 'motd-tail::default'
+
   motd_tail '/etc/motd.tail' do
     template_source 'motd.erb'
   end
