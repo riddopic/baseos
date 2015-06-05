@@ -17,28 +17,33 @@
 # limitations under the License.
 #
 
-if node[:platform] == 'centos'
-  override[:yum][:base][:mirrorlist]       =
-    'http://io.dev/?release=$releasever&arch=$basearch&repo=centos-os'
-  override[:yum][:contrib][:mirrorlist]    =
-    'http://io.dev/?release=$releasever&arch=$basearch&repo=centos-contrib'
-  override[:yum][:extras][:mirrorlist]     =
-    'http://io.dev/?release=$releasever&arch=$basearch&repo=centos-extras'
-  override[:yum][:fasttrack][:mirrorlist]  =
-    'http://io.dev/?release=$releasever&arch=$basearch&repo=centos-fasttrack'
-  override[:yum][:centosplus][:mirrorlist] =
-    'http://io.dev/?release=$releasever&arch=$basearch&repo=centos-centosplus'
-  override[:yum][:updates][:mirrorlist]    =
-    'http://io.dev/?release=$releasever&arch=$basearch&repo=centos-updates'
+override[:yum][:fedora][:mirrorlist]     =
+  'http://io.dev/?release=$releasever&arch=$basearch&repo=$osname-os'
 
-  override[:yum][:epel][:mirrorlist]       =
-    'http://io.dev/?release=$releasever&arch=$basearch&repo=epel'
-  override[:yum][:epel][:gpgkey]           =
-    'http://http://mirrors.mudbox.dev/fedora-epel/RPM-GPG-KEY-EPEL-$releasever'
+override[:yum][:base][:mirrorlist]       =
+  'http://io.dev/?release=$releasever&arch=$basearch&repo=$osname-os'
 
-elsif node[:platform] == 'fedora'
-  override[:yum][:fedora][:mirrorlist]     =
-    'http://io.dev/?release=$releasever&arch=$basearch&repo=fedora-os'
-  override[:yum][:updates][:mirrorlist]    =
-    'http://io.dev/?release=$releasever&arch=$basearch&repo=fedora-updates'
-end
+override[:yum][:contrib][:mirrorlist]    =
+  'http://io.dev/?release=$releasever&arch=$basearch&repo=$osname-contrib'
+
+override[:yum][:extras][:mirrorlist]     =
+  'http://io.dev/?release=$releasever&arch=$basearch&repo=$osname-extras'
+
+override[:yum][:fasttrack][:mirrorlist]  =
+  'http://io.dev/?release=$releasever&arch=$basearch&repo=$osname-fasttrack'
+
+override[:yum][:centosplus][:mirrorlist] =
+  'http://io.dev/?release=$releasever&arch=$basearch&repo=$osname-centosplus'
+
+override[:yum][:updates][:mirrorlist]    =
+  'http://io.dev/?release=$releasever&arch=$basearch&repo=$osname-updates'
+
+override[:yum][:epel][:mirrorlist]       =
+  'http://io.dev/?release=$releasever&arch=$basearch&repo=epel'
+
+# EPEL
+override[:yum][:epel][:gpgkey]           =
+  'http://mirrors.mudbox.dev/fedora-epel/RPM-GPG-KEY-EPEL-$releasever'
+
+override[:yum][:fedora][:mirrorlist]     =
+  'http://io.dev/?release=$releasever&arch=$basearch&repo=$osname-os'

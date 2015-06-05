@@ -19,17 +19,31 @@
 
 source 'https://rubygems.org'
 
-gem 'rake'
-gem 'yard'
-gem 'rspec'
-gem 'rubocop'
-gem 'berkshelf'
-gem 'foodcritic'
+group :lint do
+  gem 'foodcritic', '~> 4.0'
+  gem 'rubocop',    '~> 0.31'
+end
 
-group :test, :integration do
-  gem 'chefspec'
-  gem 'serverspec'
-  gem 'kitchen-sync'
+group :unit do
+  gem 'berkshelf', '~> 3'
+  gem 'chefspec',  '~> 4.2'
+end
+
+group :kitchen_common do
   gem 'test-kitchen'
+  gem 'kitchen-sync'
+end
+
+group :kitchen_docker do
   gem 'kitchen-docker'
+end
+
+group :development do
+  gem 'chef-zero'
+  gem 'yard'
+  gem 'guard'
+  gem 'guard-kitchen'
+  gem 'guard-foodcritic'
+  gem 'guard-rubocop'
+  gem 'pry-nav'
 end

@@ -1,0 +1,42 @@
+DEPENDENCIES
+  baseos
+    path: .
+    metadata: true
+  garcon
+    git: git://github.com/riddopic/garcon.git
+    revision: 3f95f1c1782a51c85b3bab80a7339b91e822808f
+    branch: develop
+  test_fixtures
+    path: test/fixtures/cookbooks/test_fixtures
+
+GRAPH
+  apt (2.7.0)
+  baseos (0.1.2)
+    apt (>= 0.0.0)
+    motd-tail (>= 0.0.0)
+    yum (>= 0.0.0)
+    yum-amazon (>= 0.0.0)
+    yum-centos (>= 0.0.0)
+    yum-epel (>= 0.0.0)
+    yum-fedora (>= 0.0.0)
+  chef_handler (1.1.9)
+  garcon (1.1.3)
+    apt (>= 0.0.0)
+    chef_handler (>= 0.0.0)
+    motd-tail (>= 0.0.0)
+    yum (>= 0.0.0)
+    yum-amazon (>= 0.0.0)
+    yum-centos (>= 0.0.0)
+    yum-epel (>= 0.0.0)
+    yum-fedora (>= 0.0.0)
+  motd-tail (2.0.2)
+  test_fixtures (0.1.0)
+  yum (3.6.0)
+  yum-amazon (0.2.0)
+    yum (~> 3.0)
+  yum-centos (0.4.1)
+    yum (~> 3.0)
+  yum-epel (0.6.0)
+    yum (~> 3.0)
+  yum-fedora (0.3.0)
+    yum (~> 3.0)

@@ -17,8 +17,17 @@
 # limitations under the License.
 #
 
+file '/etc/yum/vars/osname' do
+  content   node[:platform]
+  owner    'root'
+  group    'root'
+  mode      00644
+  only_if { node[:platform_family] == 'rhel' }
+  action   :create
+end
+
 case node[:platform]
-when 'debian'
+when 'debian', 'ubuntu'
   include_recipe 'apt::default'
   include_recipe 'motd-tail::default'
 

@@ -1,0 +1,39 @@
+
+
+  d888b8b   d888b8b    88bd88b d8888b d8888b   88bd88b
+ d8P' ?88  d8P' ?88    88P'  `d8P' `Pd8P' ?88  88P' ?8b
+ 88b  ,88b 88b  ,88b  d88     88b    88b  d88 d88   88P
+ `?88P'`88b`?88P'`88bd88'     `?888P'`?8888P'd88'   88b
+        )88
+       ,88P   A U T O M A T I O N   T O D A Y   F O R
+   `?8888P          A   B E T T E R   T O M O R R O W    ''~``
+                                                        ( o o )
++--------------------------------------------------.oooO--(_)--Oooo.-----------+
+
+*** Chef Details ***
+Chef-Client: <%= node.name %>
+Hostname: <%= node[:cloud] ? node[:cloud][:public_hostname] : node[:fqdn] %>
+<% if Chef::Config[:solo] -%>
+Chef Server: Solo
+<% else -%>
+Chef Server: <%= Chef::Config[:chef_server_url] %>
+<% end -%>
+Environment: <%= node.chef_environment %>
+Last Run: <%= ::Time.now %>
+
+Roles and Recipes:
+<% node[:roles].each do |role| -%>
+  Role: <%= role %>
+<% end -%>
+<% node[:recipes].each do |recipe| -%>
+  Recipe: <%= recipe %>
+<% end -%>
+
+<% if node[:tags] && !node[:tags].empty? -%>
+Tags:
+<% node[:tags].each do |tag| -%>
+  <%= tag %>
+<% end -%>
+<% end -%>
+
+********************

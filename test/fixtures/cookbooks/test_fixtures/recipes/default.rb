@@ -17,20 +17,4 @@
 # limitations under the License.
 #
 
-name             'baseos'
-maintainer       'Stefano Harding'
-maintainer_email 'sharding@trace3.com'
-license          'Apache 2.0'
-description      'Base OS overrides and includes'
-long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.1.2'
-
-%w[amazon centos debian fedora oracle redhat ubuntu].each { |os| supports os }
-
-depends 'yum-fedora'
-depends 'yum-amazon'
-depends 'yum-centos'
-depends 'motd-tail'
-depends 'yum-epel'
-depends 'yum'
-depends 'apt'
+Chef::Log.info 'Hi'
